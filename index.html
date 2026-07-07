@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LimeLock — The Pest Control Company | Sarasota, FL</title>
+<meta name="description" content="LimeLock is Sarasota's pest control company. We inspect, treat, and seal your home so pests stay locked out — with pet- and family-safe options and a free re-treat guarantee." />
+<meta name="theme-color" content="#0A0B09" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="LimeLock — Lock pests out. Sarasota, FL" />
+<meta property="og:description" content="Inspect. Treat. Seal. Sarasota's pest control company keeps roaches, termites, ants, and mosquitoes locked out — guaranteed." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   LimeLock — design tokens (derived from the logo)
+   ============================================================ */
+:root{
+  --void:#0A0B09;
+  --void-2:#0d0f0c;
+  --carbon:#121410;
+  --carbon-2:#171a14;
+  --raise:#1d211a;
+  --lime:#5FC93D;
+  --lime-glow:#8BEE57;
+  --lime-deep:#3E9A26;
+  --bone:#F3F6EE;
+  --muted:#9AA08F;
+  --muted-2:#6c715f;
+  --line:rgba(255,255,255,.09);
+  --line-2:rgba(255,255,255,.05);
+  --lime-soft:rgba(95,201,61,.14);
+
+  --ff-display:"Bricolage Grotesque", system-ui, sans-serif;
+  --ff-body:"Inter", system-ui, sans-serif;
+  --ff-mono:"Space Mono", ui-monospace, monospace;
+
+  --container:1200px;
+  --pad-x:clamp(20px,5vw,64px);
+  --section-y:clamp(72px,10vw,140px);
+  --radius:18px;
+  --radius-sm:12px;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  margin:0;
+  background:var(--void);
+  color:var(--bone);
+  font-family:var(--ff-body);
+  font-size:clamp(16px,1.05vw,17px);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:var(--ff-display);font-weight:800;line-height:1.02;letter-spacing:-.02em;margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+ul{margin:0;padding:0;list-style:none}
+button{font-family:inherit;cursor:pointer}
+
+:focus-visible{outline:3px solid var(--lime-glow);outline-offset:3px;border-radius:4px}
+
+.container{max-width:var(--container);margin-inline:auto;padding-inline:var(--pad-x)}
+.section{padding-block:var(--section-y)}
+
+.skip{position:absolute;left:-9999px;top:0;background:var(--lime);color:#06250a;padding:12px 18px;border-radius:0 0 10px 0;z-index:200;font-weight:600}
+.skip:focus{left:0}
+
+/* eyebrow / mono labels — used for real structure, not decoration */
+.eyebrow{
+  font-family:var(--ff-mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--lime);display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--lime);opacity:.8}
+
+/* ============================================================
+   Logo (faithful recreation of the LimeLock mark)
+   ============================================================ */
+.logo{display:inline-flex;align-items:center;line-height:0;flex:none}
+.logo__img{height:46px;width:auto;display:block;object-fit:contain}
+.footer .logo__img{height:76px}
+@media (max-width:760px){.logo__img{height:40px}}
+
+/* ============================================================
+   Header / nav
+   ============================================================ */
+.header{position:sticky;top:0;z-index:100;transition:background .3s var(--ease),border-color .3s var(--ease),backdrop-filter .3s}
+.header.scrolled{background:rgba(10,11,9,.78);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:16px}
+.nav__links{display:flex;align-items:center;gap:30px}
+.nav__links a{font-size:14.5px;color:var(--muted);font-weight:500;transition:color .2s}
+.nav__links a:hover{color:var(--bone)}
+
+/* dropdown / mega menus */
+.navdrop{position:relative}
+.navdrop__btn{display:inline-flex;align-items:center;gap:6px;background:none;border:0;font-family:inherit;font-size:14.5px;color:var(--muted);font-weight:500;cursor:pointer;padding:0;transition:color .2s}
+.navdrop__btn:hover,.navdrop.open .navdrop__btn,.navdrop:focus-within .navdrop__btn{color:var(--bone)}
+.navdrop__btn>svg{width:13px;height:13px;transition:transform .25s var(--ease)}
+.navdrop:hover .navdrop__btn>svg,.navdrop.open .navdrop__btn>svg,.navdrop:focus-within .navdrop__btn>svg{transform:rotate(180deg)}
+.navdrop__panel{position:absolute;top:calc(100% + 16px);left:0;transform:translateY(8px);background:var(--carbon);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:0 34px 70px -28px #000;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s var(--ease),transform .2s var(--ease);z-index:120}
+.navdrop__panel::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
+.navdrop:hover .navdrop__panel,.navdrop.open .navdrop__panel,.navdrop:focus-within .navdrop__panel{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+.navdrop__panel--mega{width:min(600px,92vw)}
+.megagrid{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.megaitem{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;transition:background .2s}
+.megaitem:hover{background:var(--carbon-2)}
+.megaitem__ic{width:36px;height:36px;border-radius:9px;background:var(--lime-soft);display:grid;place-items:center;flex:none}
+.megaitem__ic svg{width:19px;height:19px;color:var(--lime)}
+.megaitem b{font-size:13.5px;font-weight:600;color:var(--bone);display:block;line-height:1.25}
+.megaitem small{font-size:11.5px;color:var(--muted)}
+.navdrop__list{display:flex;flex-direction:column;gap:2px;min-width:210px}
+.navdrop__list a{padding:10px 14px;border-radius:9px;font-size:14px;color:var(--muted);transition:background .2s,color .2s}
+.navdrop__list a:hover{background:var(--carbon-2);color:var(--bone)}
+.areagrid{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:min(360px,90vw)}
+.areagrid a{padding:9px 13px;border-radius:9px;font-size:13.5px;color:var(--muted);transition:background .2s,color .2s}
+.areagrid a:hover{background:var(--carbon-2);color:var(--bone)}
+.navdrop__foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:6px;padding:11px 14px 4px;border-top:1px solid var(--line-2);font-family:var(--ff-mono);font-size:12px;color:var(--lime)}
+.navdrop__foot svg{width:15px;height:15px}
+.nav__mobcta{display:none}
+@media (max-width:1200px){.nav__phone{display:none}}
+.nav__right{display:flex;align-items:center;gap:20px}
+.nav__phone{font-family:var(--ff-mono);font-size:14px;color:var(--bone);display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.nav__phone svg{width:15px;height:15px;color:var(--lime)}
+.nav__toggle{display:none;background:none;border:0;color:var(--bone);padding:8px;margin:-8px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-weight:600;font-size:15px;padding:13px 22px;border-radius:999px;
+  border:1px solid transparent;transition:transform .2s var(--ease),background .2s,box-shadow .25s,color .2s;
+  white-space:nowrap;
+}
+.btn--primary{background:var(--lime);color:#062307;box-shadow:0 0 0 0 rgba(95,201,61,.5)}
+.btn--primary:hover{background:var(--lime-glow);transform:translateY(-2px);box-shadow:0 14px 34px -12px rgba(95,201,61,.7)}
+.btn--ghost{background:transparent;color:var(--bone);border-color:var(--line)}
+.btn--ghost:hover{border-color:var(--lime);color:var(--lime);transform:translateY(-2px)}
+.btn--lg{padding:16px 28px;font-size:16px}
+.btn svg{width:16px;height:16px}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero{position:relative;overflow:hidden;display:grid;align-items:center;min-height:min(92vh,900px);
+  padding-top:clamp(96px,13vh,150px);padding-bottom:clamp(90px,14vh,170px)}
+/* full-bleed background photo + legibility / fade-out gradients */
+.hero__photo{position:absolute;inset:0;z-index:0;background:var(--void) url("hero-bg.jpg") center 42%/cover no-repeat}
+.hero__photo::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(102deg, rgba(10,11,9,.94) 0%, rgba(10,11,9,.74) 32%, rgba(10,11,9,.38) 60%, rgba(10,11,9,.12) 100%),
+  linear-gradient(to bottom, rgba(10,11,9,.42) 0%, transparent 24%, transparent 44%, rgba(10,11,9,.88) 86%, var(--void) 100%)}
+#spray{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.hero__inner{position:relative;z-index:2;max-width:100%;margin-inline:0}
+.hero__copy{max-width:460px;text-shadow:0 2px 26px rgba(5,6,5,.5)}
+
+.hero h1{font-size:clamp(40px,6vw,76px);letter-spacing:-.035em}
+.hero h1 .out{color:var(--lime);position:relative;display:inline-block}
+.hero h1 .out::after{content:"";position:absolute;left:0;right:0;bottom:.07em;height:.5em;background:var(--lime-soft);z-index:-1;border-radius:4px;transform:scaleX(0);transform-origin:left;animation:swipe 1s var(--ease) .5s forwards}
+@keyframes swipe{to{transform:scaleX(1)}}
+.hero__sub{color:var(--muted);font-size:clamp(16px,1.5vw,19px);max-width:46ch;margin-top:26px}
+.hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px}
+.hero__assure{display:flex;flex-wrap:wrap;gap:18px 26px;margin-top:34px;font-family:var(--ff-mono);font-size:12.5px;color:var(--muted);letter-spacing:.02em}
+.hero__assure li{display:flex;align-items:center;gap:9px}
+.hero__assure svg{width:15px;height:15px;color:var(--lime);flex:none}
+
+/* ============================================================
+   Trust strip
+   ============================================================ */
+.strip{border-block:1px solid var(--line);background:var(--void-2)}
+.strip__row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px 30px;padding-block:22px}
+.strip__item{display:flex;align-items:center;gap:11px;font-family:var(--ff-mono);font-size:13px;color:var(--muted);letter-spacing:.03em}
+.strip__item svg{width:18px;height:18px;color:var(--lime);flex:none}
+
+/* ============================================================
+   Section heading
+   ============================================================ */
+.head{max-width:680px;margin-bottom:clamp(40px,5vw,60px)}
+.head h2{font-size:clamp(32px,4.6vw,54px)}
+.head p{color:var(--muted);margin-top:18px;font-size:clamp(16px,1.3vw,18px)}
+.head--center{margin-inline:auto;text-align:center}
+.head--center .eyebrow{justify-content:center}
+
+/* ============================================================
+   Pests grid
+   ============================================================ */
+.pests{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pest{position:relative;background:var(--carbon);border:1px solid var(--line);border-radius:var(--radius-sm);padding:24px 22px;overflow:hidden;transition:transform .3s var(--ease),border-color .3s,background .3s}
+.pest::after{content:"";position:absolute;inset:0;background:radial-gradient(220px 140px at 80% -10%,var(--lime-soft),transparent 70%);opacity:0;transition:opacity .35s}
+.pest:hover{transform:translateY(-5px);border-color:rgba(95,201,61,.4);background:var(--carbon-2)}
+.pest:hover::after{opacity:1}
+.pest__icon{width:42px;height:42px;color:var(--lime);margin-bottom:18px}
+.pest h3{font-size:19px;letter-spacing:-.01em}
+.pest p{color:var(--muted);font-size:14px;margin-top:8px}
+.pest__no{position:absolute;top:18px;right:20px;font-family:var(--ff-mono);font-size:12px;color:var(--muted-2)}
+
+/* ============================================================
+   Process
+   ============================================================ */
+.process{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative}
+.step{position:relative;background:linear-gradient(180deg,var(--carbon),var(--void-2));border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px}
+.step__no{font-family:var(--ff-mono);font-weight:700;font-size:13px;color:var(--lime);letter-spacing:.12em;margin-bottom:26px;display:flex;align-items:center;gap:10px}
+.step__no::after{content:"";flex:1;height:1px;background:var(--line)}
+.step__ico{width:46px;height:46px;border-radius:12px;background:var(--lime-soft);display:grid;place-items:center;margin-bottom:20px}
+.step__ico svg{width:24px;height:24px;color:var(--lime)}
+.step h3{font-size:23px;margin-bottom:12px}
+.step p{color:var(--muted);font-size:15px}
+.step--accent{border-color:rgba(95,201,61,.35);box-shadow:0 0 60px -30px rgba(95,201,61,.5)}
+
+/* ============================================================
+   Why us
+   ============================================================ */
+.why{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,80px);align-items:center}
+.why__list{display:grid;gap:14px}
+.feat{display:flex;gap:18px;padding:22px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--carbon);transition:border-color .3s,transform .3s}
+.feat:hover{border-color:rgba(95,201,61,.35);transform:translateX(4px)}
+.feat__ico{flex:none;width:44px;height:44px;border-radius:11px;background:var(--lime-soft);display:grid;place-items:center}
+.feat__ico svg{width:23px;height:23px;color:var(--lime)}
+.feat h3{font-size:18px;margin-bottom:6px}
+.feat p{color:var(--muted);font-size:14.5px}
+.guarantee{background:linear-gradient(165deg,rgba(95,201,61,.13),var(--carbon));border:1px solid rgba(95,201,61,.3);border-radius:var(--radius);padding:clamp(30px,4vw,46px)}
+.guarantee .seal{width:64px;height:64px;color:var(--lime);margin-bottom:22px}
+.guarantee h3{font-size:clamp(24px,3vw,32px);margin-bottom:16px}
+.guarantee p{color:var(--bone);opacity:.85;font-size:16px}
+.guarantee .fine{margin-top:20px;font-family:var(--ff-mono);font-size:12px;color:var(--muted);letter-spacing:.03em}
+
+/* ============================================================
+   Stats
+   ============================================================ */
+.stats{border-block:1px solid var(--line);background:linear-gradient(180deg,var(--void-2),var(--void))}
+.stats__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,40px);text-align:center}
+.stat b{font-family:var(--ff-display);font-weight:800;font-size:clamp(40px,6vw,68px);color:var(--lime);letter-spacing:-.04em;line-height:1;display:block}
+.stat span{display:block;margin-top:12px;color:var(--muted);font-size:14px;font-family:var(--ff-mono);letter-spacing:.04em}
+
+/* ============================================================
+   Reviews
+   ============================================================ */
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.review{background:var(--carbon);border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px;display:flex;flex-direction:column;gap:18px}
+.stars{display:flex;gap:3px;color:var(--lime)}
+.stars svg{width:17px;height:17px}
+.review p{font-size:15.5px;line-height:1.6}
+.review__who{display:flex;align-items:center;gap:13px;margin-top:auto}
+.review__av{width:42px;height:42px;border-radius:50%;background:var(--lime-soft);color:var(--lime);display:grid;place-items:center;font-family:var(--ff-display);font-weight:800;font-size:17px;flex:none}
+.review__who b{font-size:15px;display:block}
+.review__who span{font-size:12.5px;color:var(--muted);font-family:var(--ff-mono)}
+
+/* ============================================================
+   Service area
+   ============================================================ */
+.area{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(36px,5vw,70px);align-items:center}
+.area__towns{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.area__towns li{font-family:var(--ff-mono);font-size:13px;color:var(--bone);padding:9px 15px;border:1px solid var(--line);border-radius:999px;background:var(--carbon);transition:border-color .25s,color .25s}
+.area__towns li:hover{border-color:var(--lime);color:var(--lime)}
+.area__map{position:relative;aspect-ratio:1/.92;border:1px solid var(--line);border-radius:var(--radius);background:radial-gradient(120% 100% at 60% 30%,rgba(95,201,61,.1),transparent 55%),var(--carbon);overflow:hidden;display:grid;place-items:center}
+.area__map svg{width:90%;height:auto}
+
+/* ============================================================
+   Quote form
+   ============================================================ */
+.quote{position:relative;overflow:hidden}
+.quote__wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,70px);align-items:start;
+  background:linear-gradient(160deg,var(--carbon-2),var(--void-2));border:1px solid var(--line);border-radius:24px;padding:clamp(32px,5vw,60px)}
+.quote h2{font-size:clamp(30px,4vw,46px)}
+.quote__sub{color:var(--muted);margin-top:18px}
+.quote__call{margin-top:30px;padding-top:30px;border-top:1px solid var(--line)}
+.quote__call span{font-family:var(--ff-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.quote__call a{font-family:var(--ff-display);font-weight:800;font-size:clamp(26px,3vw,34px);color:var(--bone);display:block;margin-top:8px;transition:color .2s}
+.quote__call a:hover{color:var(--lime)}
+.form{display:grid;gap:14px}
+.field{display:grid;gap:7px}
+.field label{font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select,.field textarea{
+  background:var(--void);border:1px solid var(--line);border-radius:10px;color:var(--bone);
+  font-family:var(--ff-body);font-size:16px;padding:13px 15px;transition:border-color .2s,box-shadow .2s;width:100%}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted-2)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--lime);box-shadow:0 0 0 3px var(--lime-soft)}
+.field textarea{resize:vertical;min-height:96px}
+.field--row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form__note{font-size:12px;color:var(--muted-2);font-family:var(--ff-mono)}
+.form__ok{display:none;background:var(--lime-soft);border:1px solid rgba(95,201,61,.4);border-radius:12px;padding:16px 18px;color:var(--lime);font-size:14.5px;font-weight:500}
+.form__ok.show{display:block}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer{border-top:1px solid var(--line);background:var(--void-2);padding-block:clamp(50px,6vw,80px) 30px}
+.footer__top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px}
+.footer__brand p{color:var(--muted);font-size:14px;margin-top:20px;max-width:30ch}
+.footer h4{font-family:var(--ff-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;font-weight:700}
+.footer__col a,.footer__col li{color:var(--bone);font-size:14.5px;opacity:.85;margin-bottom:11px;transition:color .2s,opacity .2s}
+.footer__col a:hover{color:var(--lime);opacity:1}
+.footer__bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:clamp(40px,5vw,60px);padding-top:26px;border-top:1px solid var(--line);font-family:var(--ff-mono);font-size:12px;color:var(--muted-2)}
+
+/* ============================================================
+   Reveal animation
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}
+.reveal[data-d="2"]{transition-delay:.16s}
+.reveal[data-d="3"]{transition-delay:.24s}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .hero h1 .out::after{animation:none;transform:scaleX(1)}
+  .dot{animation:none}
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width:980px){
+  .hero{min-height:min(88vh,780px)}
+  .hero__photo{background-position:center 46%}
+  .pests{grid-template-columns:repeat(2,1fr)}
+  .process{grid-template-columns:1fr}
+  .why{grid-template-columns:1fr;gap:40px}
+  .stats__grid{grid-template-columns:repeat(2,1fr);gap:36px 20px}
+  .reviews{grid-template-columns:1fr}
+  .area{grid-template-columns:1fr}
+  .area__map{max-width:480px;order:-1}
+  .quote__wrap{grid-template-columns:1fr;gap:36px}
+  .footer__top{grid-template-columns:1fr 1fr}
+}
+@media (max-width:1024px){
+  .nav__links{display:none}
+  .nav__toggle{display:block}
+  .nav__right>.btn{display:none}
+  .header.menu-open .nav__links{
+    display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;align-items:stretch;
+    background:var(--void);border-bottom:1px solid var(--line);padding:8px var(--pad-x) 22px;
+    max-height:calc(100vh - 70px);overflow-y:auto}
+  .header.menu-open .nav__links>a{padding:15px 0;border-bottom:1px solid var(--line-2);width:100%;font-size:16px}
+  .header.menu-open{background:rgba(10,11,9,.97);backdrop-filter:blur(14px)}
+  /* dropdowns become tap-to-expand accordions in the mobile menu */
+  .navdrop{width:100%}
+  .navdrop__btn{width:100%;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line-2);font-size:16px}
+  .navdrop__panel{position:static;transform:none;opacity:1;visibility:visible;pointer-events:auto;display:none;width:auto;background:none;border:0;box-shadow:none;padding:6px 0 12px}
+  .navdrop__panel::before{display:none}
+  .navdrop.open .navdrop__panel{display:block}
+  .navdrop__panel--mega{width:auto}
+  .megagrid,.areagrid{grid-template-columns:1fr;width:auto}
+  .navdrop__list{min-width:0}
+  .megaitem,.navdrop__list a,.areagrid a{padding:11px 8px}
+  .navdrop__foot{margin-top:2px;padding:12px 8px 4px}
+  .nav__mobcta{display:flex;flex-direction:column;gap:12px;padding-top:18px}
+  .nav__mobcta .btn{width:100%;justify-content:center}
+  .nav__mobcall{text-align:center;font-family:var(--ff-mono);font-size:14px;color:var(--bone)}
+}
+@media (max-width:520px){
+  .pests{grid-template-columns:1fr}
+  .footer__top{grid-template-columns:1fr}
+  .field--row{grid-template-columns:1fr}
+  .hero__cta{flex-direction:column;align-items:stretch}
+  .hero__cta .btn{width:100%}
+}
+
+/* ============================================================
+   Custom cursor — a lime glow that reveals pests hiding in the page
+   ============================================================ */
+.cur-glow{position:fixed;top:0;left:0;pointer-events:none;opacity:0;transition:opacity .35s ease;z-index:9998;will-change:transform;
+  width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;
+  background:radial-gradient(circle,rgba(95,201,61,.24),rgba(95,201,61,.08) 42%,transparent 70%);filter:blur(6px);mix-blend-mode:screen}
+.cur-glow2{position:fixed;top:0;left:0;pointer-events:none;opacity:0;transition:opacity .35s ease;z-index:9999;will-change:transform;
+  width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.32),rgba(255,255,255,.10) 42%,transparent 70%);mix-blend-mode:screen}
+.bug{position:absolute;pointer-events:none;opacity:0;color:var(--lime);z-index:4;will-change:opacity}
+.bug svg{width:100%;height:100%;display:block;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(95,201,61,.55))}
+@media (hover:none),(pointer:coarse){.cur-glow,.cur-glow2{display:none}}
+@media (prefers-reduced-motion:reduce){.cur-glow{transition:none}}
+
+/* ============================================================
+   Pest profile modal (clickable pest cards)
+   ============================================================ */
+.pest{cursor:pointer}
+.pest__more{margin-top:16px;font-family:var(--ff-mono);font-size:12px;color:var(--lime);display:inline-flex;align-items:center;gap:6px;opacity:.72;transition:opacity .2s var(--ease),gap .2s var(--ease);position:relative;z-index:1}
+.pest:hover .pest__more{opacity:1;gap:9px}
+.pmodal-scrim{position:fixed;inset:0;background:rgba(5,6,5,.72);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .3s var(--ease);z-index:1000}
+.pmodal-scrim.show{opacity:1;visibility:visible}
+.pmodal{position:fixed;z-index:1001;left:50%;top:50%;transform:translate(-50%,-46%) scale(.98);opacity:0;visibility:hidden;
+  transition:opacity .3s var(--ease),transform .3s var(--ease);
+  width:min(880px,94vw);max-height:90vh;background:var(--carbon);border:1px solid var(--line);border-radius:22px;overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;box-shadow:0 50px 120px -40px #000}
+.pmodal.show{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+.pmodal__media{position:relative;background:var(--void)}
+.pmodal__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pmodal__credit{position:absolute;left:10px;bottom:10px;font-family:var(--ff-mono);font-size:10px;color:rgba(255,255,255,.8);background:rgba(0,0,0,.5);padding:3px 8px;border-radius:6px}
+.pmodal__credit a{color:inherit}
+.pmodal__body{padding:clamp(24px,3vw,36px);overflow-y:auto;max-height:90vh}
+.pmodal__body h3{font-size:clamp(23px,3vw,30px);margin:8px 0 12px}
+.pmodal__intro{color:var(--muted);font-size:15px;line-height:1.6}
+.pmodal__sec{margin-top:22px}
+.pmodal__sec h4{font-family:var(--ff-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin-bottom:10px}
+.pmodal__sec>p{color:var(--bone);font-size:14.5px;line-height:1.6;opacity:.92}
+.pmodal__tips{display:grid;gap:10px}
+.pmodal__tips li{display:flex;gap:10px;font-size:14px;color:var(--bone);line-height:1.5}
+.pmodal__tips li svg{flex:none;margin-top:3px}
+.pmodal__cta{margin-top:26px}
+.pmodal__close{position:absolute;top:12px;right:12px;z-index:3;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid var(--line);color:var(--bone);display:grid;place-items:center;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.pmodal__close:hover{background:rgba(0,0,0,.7);border-color:var(--lime);color:var(--lime)}
+@media (max-width:720px){
+  .pmodal{grid-template-columns:1fr;grid-template-rows:34vh 1fr;top:0;left:0;transform:translateY(24px);width:100vw;height:100dvh;max-height:100dvh;border-radius:0}
+  .pmodal.show{transform:none}
+  .pmodal__body{max-height:none;min-height:0}
+}
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#quote">Skip to free quote</a>
+
+<!-- ============== HEADER ============== -->
+<header class="header" id="header">
+  <div class="container nav">
+    <a class="logo" href="#top" aria-label="LimeLock — The Pest Control Company">
+      <img class="logo__img" src="limelock-nav.svg" alt="LimeLock — The Pest Control Company" width="218" height="63" />
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <div class="navdrop">
+        <button class="navdrop__btn" type="button" aria-haspopup="true" aria-expanded="false">Services
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="navdrop__panel navdrop__panel--mega">
+          <div class="megagrid">
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="27" rx="9" ry="13"/><circle cx="24" cy="12" r="4"/><path d="M20 9 15 5M28 9l5-4M15 22l-7-3M33 22l7-3M14 30l-7 1M34 30l7 1M16 38l-5 4M32 38l5 4"/></svg></span><span><b>Roaches</b><small>Driven out at the source</small></span></a>
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="26" rx="6" ry="14"/><circle cx="24" cy="9" r="3.5"/><path d="M22 7l-4-3M26 7l4-3M18 20l-7-2M30 20l7-2M18 30l-7 2M30 30l7 2"/></svg></span><span><b>Termites</b><small>Caught early, stopped fast</small></span></a>
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14 4 6"/><circle cx="16" cy="15" r="2.6"/><path d="M15 13l-3-4M18 13v-4"/><path d="M18 16 38 34"/><ellipse cx="25" cy="18" rx="9" ry="3.2" transform="rotate(26 25 18)"/><path d="M21 18l-4 8 2 8"/><path d="M25 22l-2 9 4 7"/><path d="M30 27l1 8 6 5"/></svg></span><span><b>Mosquitoes</b><small>Reclaim your yard</small></span></a>
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="12" r="4"/><circle cx="24" cy="24" r="5"/><ellipse cx="24" cy="37" rx="6" ry="7"/><path d="M19 24l-8-3M29 24l8-3M21 8l-3-3M27 8l3-3"/></svg></span><span><b>Ants</b><small>Colonies eliminated</small></span></a>
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="22" cy="26" rx="11" ry="8"/><circle cx="34" cy="22" r="5"/><path d="M38 20c2-2 4-2 5-1M38 24c2 1 4 1 5 0M11 28c-3 1-5 4-5 7M14 31c-2 2-2 5-1 7"/></svg></span><span><b>Rodents</b><small>Trapped &amp; sealed out</small></span></a>
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="9"/><path d="M24 15v-5M24 38v-5M15 24h-5M38 24h-5M17.6 17.6l-3.5-3.5M33.9 33.9l-3.5-3.5M30.4 17.6l3.5-3.5M14.1 33.9l3.5-3.5"/></svg></span><span><b>Fleas &amp; Ticks</b><small>Protect your pets</small></span></a>
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="29" rx="5" ry="11"/><circle cx="24" cy="12" r="3.5"/><path d="M24 24c-7-1-11-6-11-6M24 24c7-1 11-6 11-6M24 33c-5 0-8-3-8-3M24 33c5 0 8-3 8-3"/></svg></span><span><b>Wasps &amp; Hornets</b><small>Nests safely removed</small></span></a>
+            <a class="megaitem" href="#pests"><span class="megaitem__ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="28" rx="6.5" ry="7.5"/><circle cx="24" cy="18" r="3.6"/><path d="M21 16C15 12 12 12 8 9"/><path d="M20 21C13 19 10 20 6 18"/><path d="M20 26C13 26 10 29 7 30"/><path d="M21 31C15 33 13 37 11 40"/><path d="M27 16C33 12 36 12 40 9"/><path d="M28 21C35 19 38 20 42 18"/><path d="M28 26C35 26 38 29 41 30"/><path d="M27 31C33 33 35 37 37 40"/></svg></span><span><b>Spiders &amp; More</b><small>Silverfish, lovebugs &amp; more</small></span></a>
+          </div>
+          <a class="navdrop__foot" href="#pests">See all pests we handle
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="navdrop">
+        <button class="navdrop__btn" type="button" aria-haspopup="true" aria-expanded="false">Service areas
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="navdrop__panel">
+          <div class="areagrid">
+            <a href="#area">Sarasota</a><a href="#area">Bradenton</a><a href="#area">Venice</a><a href="#area">Lakewood Ranch</a><a href="#area">Siesta Key</a><a href="#area">Osprey</a><a href="#area">Nokomis</a><a href="#area">Longboat Key</a><a href="#area">Lido Key</a><a href="#area">North Port</a><a href="#area">Palmetto</a><a href="#area">Parrish</a>
+          </div>
+          <a class="navdrop__foot" href="#area">See the service map
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="navdrop">
+        <button class="navdrop__btn" type="button" aria-haspopup="true" aria-expanded="false">Company
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="navdrop__panel">
+          <div class="navdrop__list">
+            <a href="#why">Why LimeLock</a>
+            <a href="#process">How it works</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#why">The LimeLock Guarantee</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="app.html">Sign in</a>
+
+      <div class="nav__mobcta">
+        <a class="btn btn--primary" href="#quote">Get a free quote</a>
+        <a class="nav__mobcall" href="tel:+19415550199">Call (941) 555-0199</a>
+      </div>
+    </nav>
+
+    <div class="nav__right">
+      <a class="nav__phone" href="tel:+19415550199">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        (941) 555-0199
+      </a>
+      <a class="btn btn--primary" href="#quote">Get a free quote</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="hero__photo" aria-hidden="true"></div>
+  <canvas id="spray" aria-hidden="true"></canvas>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow reveal">Sarasota, Florida · Pest Control</span>
+      <h1 class="reveal" data-d="1">Lock pests<br><span class="out">out.</span><br>For good.</h1>
+      <p class="hero__sub reveal" data-d="2">Roaches, termites, ants, mosquitoes — we inspect your home, treat the source, and seal the way back in. The LimeLock barrier keeps Sarasota homes covered year-round.</p>
+      <div class="hero__cta reveal" data-d="2">
+        <a class="btn btn--primary btn--lg" href="#quote">Get a free quote
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn--ghost btn--lg" href="tel:+19415550199">Call (941) 555-0199</a>
+      </div>
+      <ul class="hero__assure reveal" data-d="3">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Licensed &amp; insured in FL</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Always pet- &amp; family-safe</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Free re-treats between visits</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============== TRUST STRIP ============== -->
+<div class="strip">
+  <div class="container strip__row">
+    <div class="strip__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z"/></svg>State-Certified Operator</div>
+    <div class="strip__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z"/><path d="m8 12 3 3 5-6"/></svg>Same-Day Service Available</div>
+    <div class="strip__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-7-10a7 7 0 0 1 14 0c0 5.65-7 10-7 10Z"/><circle cx="12" cy="11" r="2.5"/></svg>Locally Owned in Sarasota</div>
+    <div class="strip__item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.4 7.4H22l-6 4.4 2.3 7.2L12 16.7 5.7 21l2.3-7.2-6-4.4h7.6Z"/></svg>4.9 Stars · 600+ Reviews</div>
+  </div>
+</div>
+
+<!-- ============== PESTS ============== -->
+<section class="section" id="pests">
+  <div class="container">
+    <div class="head reveal">
+      <span class="eyebrow">What we lock out</span>
+      <h2>The pests that call Southwest Florida home.</h2>
+      <p>Our climate is paradise — for bugs. LimeLock targets the species that actually show up in Gulf Coast homes, not a generic checklist.</p>
+    </div>
+    <div class="pests">
+      <article class="pest reveal"><span class="pest__no">01</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="27" rx="9" ry="13"/><circle cx="24" cy="12" r="4"/><path d="M20 9 15 5M28 9l5-4M15 22l-7-3M33 22l7-3M14 30l-7 1M34 30l7 1M16 38l-5 4M32 38l5 4"/></svg>
+        <h3>Roaches &amp; Palmetto Bugs</h3><p>German and American roaches driven out at the harborage, not just the ones you see.</p>
+      </article>
+      <article class="pest reveal" data-d="1"><span class="pest__no">02</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="26" rx="6" ry="14"/><circle cx="24" cy="9" r="3.5"/><path d="M22 7l-4-3M26 7l4-3M18 20l-7-2M30 20l7-2M18 30l-7 2M30 30l7 2"/></svg>
+        <h3>Termites</h3><p>Subterranean and drywood colonies — detected early and stopped before they cost you a structure.</p>
+      </article>
+      <article class="pest reveal" data-d="2"><span class="pest__no">03</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14 4 6"/><circle cx="16" cy="15" r="2.6"/><path d="M15 13l-3-4M18 13v-4"/><path d="M18 16 38 34"/><ellipse cx="25" cy="18" rx="9" ry="3.2" transform="rotate(26 25 18)"/><path d="M21 18l-4 8 2 8"/><path d="M25 22l-2 9 4 7"/><path d="M30 27l1 8 6 5"/></svg>
+        <h3>Mosquitoes</h3><p>Yard treatments and breeding-source control so your evenings outside are actually usable.</p>
+      </article>
+      <article class="pest reveal" data-d="3"><span class="pest__no">04</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="12" r="4"/><circle cx="24" cy="24" r="5"/><ellipse cx="24" cy="37" rx="6" ry="7"/><path d="M19 24l-8-3M29 24l8-3M21 8l-3-3M27 8l3-3"/></svg>
+        <h3>Ants</h3><p>Fire ants, ghost ants, and white-footed ants — colonies eliminated, trails sealed off.</p>
+      </article>
+      <article class="pest reveal"><span class="pest__no">05</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="22" cy="26" rx="11" ry="8"/><circle cx="34" cy="22" r="5"/><path d="M38 20c2-2 4-2 5-1M38 24c2 1 4 1 5 0M11 28c-3 1-5 4-5 7M14 31c-2 2-2 5-1 7"/></svg>
+        <h3>Rodents</h3><p>Roof rats and mice trapped, removed, and locked out with full entry-point exclusion.</p>
+      </article>
+      <article class="pest reveal" data-d="1"><span class="pest__no">06</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="9"/><path d="M24 15v-5M24 38v-5M15 24h-5M38 24h-5M17.6 17.6l-3.5-3.5M33.9 33.9l-3.5-3.5M30.4 17.6l3.5-3.5M14.1 33.9l3.5-3.5"/></svg>
+        <h3>Fleas &amp; Ticks</h3><p>Interior and yard programs that break the life cycle and protect your pets.</p>
+      </article>
+      <article class="pest reveal" data-d="2"><span class="pest__no">07</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="29" rx="5" ry="11"/><circle cx="24" cy="12" r="3.5"/><path d="M24 24c-7-1-11-6-11-6M24 24c7-1 11-6 11-6M24 33c-5 0-8-3-8-3M24 33c5 0 8-3 8-3"/></svg>
+        <h3>Wasps &amp; Hornets</h3><p>Nests removed safely and re-nesting points treated so they don't come back.</p>
+      </article>
+      <article class="pest reveal" data-d="3"><span class="pest__no">08</span>
+        <svg class="pest__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="28" rx="6.5" ry="7.5"/><circle cx="24" cy="18" r="3.6"/><path d="M21 16C15 12 12 12 8 9"/><path d="M20 21C13 19 10 20 6 18"/><path d="M20 26C13 26 10 29 7 30"/><path d="M21 31C15 33 13 37 11 40"/><path d="M27 16C33 12 36 12 40 9"/><path d="M28 21C35 19 38 20 42 18"/><path d="M28 26C35 26 38 29 41 30"/><path d="M27 31C33 33 35 37 37 40"/></svg>
+        <h3>Spiders &amp; More</h3><p>Silverfish, earwigs, lovebugs, and the seasonal swarms unique to the Gulf Coast.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PROCESS ============== -->
+<section class="section" id="process" style="background:linear-gradient(180deg,var(--void),var(--void-2),var(--void))">
+  <div class="container">
+    <div class="head head--center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps to a sealed home.</h2>
+      <p>A real process, in order — because skipping the inspection or the seal is why pests come back.</p>
+    </div>
+    <div class="process">
+      <article class="step reveal">
+        <div class="step__no">STEP 01</div>
+        <div class="step__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <h3>Inspect &amp; identify</h3>
+        <p>A certified technician walks your property, finds the species and the source — entry points, moisture, nesting — and writes the plan around your home, not a script.</p>
+      </article>
+      <article class="step step--accent reveal" data-d="1">
+        <div class="step__no">STEP 02</div>
+        <div class="step__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V3h4v4M13 7l7 2v3M9 11l-4 2v8h14v-6"/><path d="M17 13h.01M19 16h.01M16 17h.01"/></svg></div>
+        <h3>Treat &amp; spray</h3>
+        <p>We apply targeted, odor-free treatments where pests actually live and travel. Every product we use is pet- and family-safe — precisely applied, not fog-the-house overkill.</p>
+      </article>
+      <article class="step reveal" data-d="2">
+        <div class="step__no">STEP 03</div>
+        <div class="step__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+        <h3>Seal &amp; guard</h3>
+        <p>We close the entry points and set up a recurring barrier — the LimeLock. If anything gets through between visits, we come back and re-treat free.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== WHY ============== -->
+<section class="section" id="why">
+  <div class="container why">
+    <div class="reveal">
+      <span class="eyebrow">Why LimeLock</span>
+      <h2 style="font-size:clamp(30px,4.4vw,50px)">A local crew that treats your home like the perimeter it is.</h2>
+      <p style="color:var(--muted);margin-top:18px">No call centers, no rotating subcontractors. The same Sarasota technicians, accountable for keeping your home locked down.</p>
+      <ul class="why__list" style="margin-top:30px">
+        <li class="feat">
+          <span class="feat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <div><h3>Licensed, insured, certified</h3><p>Florida state-certified operators and a fully insured crew on every visit.</p></div>
+        </li>
+        <li class="feat">
+          <span class="feat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16c-3 0-5-2-5-5 0-2 1-4 3-5M14 16c3 0 5-2 5-5 0-2-1-4-3-5"/><circle cx="8.5" cy="6.5" r="2"/><circle cx="15.5" cy="6.5" r="2"/><path d="M12 16v3c0 1.5-1 3-3 3M12 16c0 2 1 3 3 3"/></svg></span>
+          <div><h3>Always pet- &amp; family-safe</h3><p>Every product we use is safe around kids and pets — no exceptions, just precise application.</p></div>
+        </li>
+        <li class="feat">
+          <span class="feat__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div><h3>Fast, on-time response</h3><p>24-hour response on new issues and tight, respected appointment windows.</p></div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="guarantee reveal" data-d="1">
+      <svg class="seal" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 4 8 12v16c0 14 10 24 24 32 14-8 24-18 24-32V12L32 4Z"/>
+        <path d="m22 31 7 7 14-15"/>
+      </svg>
+      <h3>The LimeLock Guarantee</h3>
+      <p>If pests show up between scheduled visits, we come back and re-treat at no charge. The barrier holds — or we make it hold. That's the whole point of the name.</p>
+      <p class="fine">// Covered with any recurring LimeLock plan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== STATS ============== -->
+<div class="stats section" style="padding-block:clamp(54px,7vw,90px)">
+  <div class="container stats__grid">
+    <div class="stat reveal"><b data-count="12" data-suffix="+">12+</b><span>YEARS ON THE GULF COAST</span></div>
+    <div class="stat reveal" data-d="1"><b data-count="4800" data-suffix="+">4,800+</b><span>HOMES &amp; BUSINESSES GUARDED</span></div>
+    <div class="stat reveal" data-d="2"><b data-count="24" data-suffix="h">24h</b><span>AVERAGE RESPONSE TIME</span></div>
+    <div class="stat reveal" data-d="3"><b>4.9★</b><span>AVERAGE CUSTOMER RATING</span></div>
+  </div>
+</div>
+
+<!-- ============== REVIEWS ============== -->
+<section class="section" id="reviews">
+  <div class="container">
+    <div class="head head--center reveal">
+      <span class="eyebrow">From the neighborhood</span>
+      <h2>Sarasota homes, locked down.</h2>
+    </div>
+    <div class="reviews">
+      <article class="review reveal">
+        <div class="stars" aria-label="5 out of 5 stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg>
+        </div>
+        <p>"We had palmetto bugs every summer. After LimeLock found where they were getting in and sealed it, we've gone a full year without one. The tech actually explained everything."</p>
+        <div class="review__who"><span class="review__av">D</span><div><b>Dana R.</b><span>Gulf Gate, Sarasota</span></div></div>
+      </article>
+      <article class="review reveal" data-d="1">
+        <div class="stars" aria-label="5 out of 5 stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg>
+        </div>
+        <p>"Booked online at night, had a technician out the next morning for an ant problem in the kitchen. Gone in two days, and the quarterly plan keeps them away. Pet-safe, which mattered to us."</p>
+        <div class="review__who"><span class="review__av">M</span><div><b>Marcus &amp; Lily T.</b><span>Lakewood Ranch</span></div></div>
+      </article>
+      <article class="review reveal" data-d="2">
+        <div class="stars" aria-label="5 out of 5 stars">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.8L12 17.6 5.9 20.8 7 14 2 9.2l6.9-.9Z"/></svg>
+        </div>
+        <p>"Mosquitoes made our lanai unusable. Their yard treatment changed that completely — we're outside every evening now. Same friendly tech each visit, which I really appreciate."</p>
+        <div class="review__who"><span class="review__av">S</span><div><b>Sofia M.</b><span>Siesta Key</span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SERVICE AREA ============== -->
+<section class="section" id="area" style="background:var(--void-2);border-block:1px solid var(--line)">
+  <div class="container area">
+    <div class="reveal">
+      <span class="eyebrow">Service area</span>
+      <h2 style="font-size:clamp(30px,4.4vw,50px)">Covering Sarasota &amp; Manatee counties.</h2>
+      <p style="color:var(--muted);margin-top:18px">From the keys to the ranch — if you're on the Suncoast, you're in range. Not sure if we reach you? Just ask.</p>
+      <ul class="area__towns">
+        <li>Sarasota</li><li>Bradenton</li><li>Venice</li><li>Lakewood Ranch</li><li>Siesta Key</li><li>Osprey</li><li>Nokomis</li><li>Longboat Key</li><li>Lido Key</li><li>North Port</li><li>Palmetto</li><li>Parrish</li><li>Ellenton</li>
+      </ul>
+    </div>
+    <div class="area__map reveal" data-d="1" role="img" aria-label="Stylized map of the Sarasota service area">
+      <svg viewBox="0 0 320 300" fill="none" aria-hidden="true">
+        <!-- coastline / gulf suggestion -->
+        <path d="M0 0v300h70c-18-40-22-70-10-110 14-46 6-90-24-130 30-22 36-44 24-60H0Z" fill="rgba(95,201,61,.05)"/>
+        <path d="M70 300c-18-40-22-70-10-110 14-46 6-90-24-130" stroke="#5FC93D" stroke-width="1.4" opacity=".5" fill="none"/>
+        <!-- coverage radius -->
+        <circle cx="190" cy="150" r="118" stroke="#5FC93D" stroke-width="1.4" stroke-dasharray="3 6" opacity=".55"/>
+        <circle cx="190" cy="150" r="78" stroke="#5FC93D" stroke-width="1" opacity=".3"/>
+        <!-- pins -->
+        <g fill="#5FC93D">
+          <circle cx="190" cy="150" r="6"/><circle cx="150" cy="100" r="3.5" opacity=".8"/><circle cx="235" cy="110" r="3.5" opacity=".8"/><circle cx="160" cy="205" r="3.5" opacity=".8"/><circle cx="245" cy="195" r="3.5" opacity=".8"/><circle cx="120" cy="160" r="3.5" opacity=".8"/>
+        </g>
+        <circle cx="190" cy="150" r="14" stroke="#5FC93D" stroke-width="1.5" opacity=".6"/>
+        <text x="190" y="182" text-anchor="middle" font-family="Space Mono, monospace" font-size="11" fill="#9AA08F" letter-spacing="1">SARASOTA</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============== QUOTE ============== -->
+<section class="section quote" id="quote">
+  <div class="container">
+    <div class="quote__wrap reveal">
+      <div>
+        <span class="eyebrow">Free quote</span>
+        <h2>Lock your home down.<br>No-cost inspection.</h2>
+        <p class="quote__sub">Tell us what you're dealing with and where you are. We'll get back to you the same business day with a plan and a flat, honest price — no pressure, no surprise fees.</p>
+        <div class="quote__call">
+          <span>Prefer to talk? Call us</span>
+          <a href="tel:+19415550199">(941) 555-0199</a>
+        </div>
+      </div>
+
+      <form class="form" id="quoteForm" novalidate>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required />
+        </div>
+        <div class="field--row">
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" placeholder="(941) 000-0000" autocomplete="tel" required />
+          </div>
+          <div class="field">
+            <label for="zip">ZIP code</label>
+            <input id="zip" name="zip" type="text" inputmode="numeric" placeholder="342__" autocomplete="postal-code" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="pest">What's the problem?</label>
+          <select id="pest" name="pest" required>
+            <option value="" selected disabled>Choose a pest…</option>
+            <option>Roaches / palmetto bugs</option>
+            <option>Termites</option>
+            <option>Mosquitoes</option>
+            <option>Ants</option>
+            <option>Rodents</option>
+            <option>Fleas / ticks</option>
+            <option>Wasps / hornets</option>
+            <option>Not sure / multiple</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="msg">Anything else? <span style="text-transform:none;letter-spacing:0;color:var(--muted-2)">(optional)</span></label>
+          <textarea id="msg" name="msg" placeholder="When did you first notice it? Pets in the home?"></textarea>
+        </div>
+        <button class="btn btn--primary btn--lg" type="submit" style="width:100%">Send my free quote request
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <p class="form__note">// We reply same business day. Your info is never sold.</p>
+        <div class="form__ok" id="formOk" role="status">Thanks — your request is in. A LimeLock tech will reach out shortly.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="logo" href="#top" aria-label="LimeLock — The Pest Control Company">
+          <img class="logo__img" src="limelock-footer.svg" alt="LimeLock — The Pest Control Company" width="218" height="82" />
+        </a>
+        <p>Sarasota's pest control company. We inspect, treat, and seal — so pests stay locked out.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#pests">Roach control</a></li>
+          <li><a href="#pests">Termite protection</a></li>
+          <li><a href="#pests">Mosquito treatment</a></li>
+          <li><a href="#pests">Rodent exclusion</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#why">Why LimeLock</a></li>
+          <li><a href="#process">How it works</a></li>
+          <li><a href="#area">Service area</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="app.html">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+19415550199">(941) 555-0199</a></li>
+          <li><a href="mailto:hello@limelock.com">hello@limelock.com</a></li>
+          <li>Mon–Sat · 7am–7pm</li>
+          <li>Sarasota, FL 34236</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="year">2026</span> LimeLock Pest Control · FL License #PCO-00000</span>
+      <span><a href="app.html" style="color:inherit;border-bottom:1px solid var(--line)">Staff &amp; owner login</a> &nbsp;·&nbsp; // Lock pests out.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* year */
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* sticky header state */
+  var header = document.getElementById("header");
+  var onScroll = function(){ header.classList.toggle("scrolled", window.scrollY > 12); };
+  onScroll(); window.addEventListener("scroll", onScroll, {passive:true});
+
+  /* mobile menu */
+  var toggle = document.getElementById("navToggle");
+  toggle.addEventListener("click", function(){
+    var open = header.classList.toggle("menu-open");
+    toggle.setAttribute("aria-expanded", open ? "true":"false");
+    toggle.setAttribute("aria-label", open ? "Close menu":"Open menu");
+  });
+  header.querySelectorAll(".nav__links a").forEach(function(a){
+    a.addEventListener("click", function(){
+      header.classList.remove("menu-open");
+      toggle.setAttribute("aria-expanded","false");
+      closeDrops();
+    });
+  });
+
+  /* dropdown / mega menus */
+  var drops = header.querySelectorAll(".navdrop");
+  function closeDrops(except){
+    drops.forEach(function(d){
+      if(d===except) return;
+      d.classList.remove("open");
+      var b=d.querySelector(".navdrop__btn"); if(b) b.setAttribute("aria-expanded","false");
+    });
+  }
+  drops.forEach(function(d){
+    var btn = d.querySelector(".navdrop__btn");
+    btn.addEventListener("click", function(e){
+      e.preventDefault(); e.stopPropagation();
+      var willOpen = !d.classList.contains("open");
+      closeDrops(d);
+      d.classList.toggle("open", willOpen);
+      btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+  });
+  document.addEventListener("click", function(e){
+    if(!e.target.closest(".navdrop")) closeDrops();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeDrops();
+  });
+
+  /* reveal on scroll */
+  var reveals = document.querySelectorAll(".reveal");
+  if (reduce || !("IntersectionObserver" in window)){
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+    reveals.forEach(function(el){ io.observe(el); });
+  }
+
+  /* count-up stats */
+  var counted = false;
+  function runCounts(){
+    if (counted || reduce) return; counted = true;
+    document.querySelectorAll("[data-count]").forEach(function(el){
+      var target = parseFloat(el.getAttribute("data-count"));
+      var suffix = el.getAttribute("data-suffix") || "";
+      var dur = 1400, start = performance.now();
+      function tick(now){
+        var p = Math.min((now-start)/dur, 1);
+        var eased = 1-Math.pow(1-p,3);
+        var val = Math.floor(eased*target);
+        el.textContent = val.toLocaleString() + suffix;
+        if (p<1) requestAnimationFrame(tick); else el.textContent = target.toLocaleString()+suffix;
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+  var statsEl = document.querySelector(".stats");
+  if (statsEl && "IntersectionObserver" in window && !reduce){
+    var sio = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ runCounts(); sio.disconnect(); } });
+    }, {threshold:0.4});
+    sio.observe(statsEl);
+  }
+
+  /* form (front-end only — wire to a real handler / email service before launch) */
+  var form = document.getElementById("quoteForm");
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (!form.checkValidity()){ form.reportValidity(); return; }
+    document.getElementById("formOk").classList.add("show");
+    form.querySelector("button[type=submit]").disabled = true;
+    form.reset();
+  });
+
+  /* ============================================================
+     Signature element — the lime treatment spray
+     A fine mist drifts across the hero, emulating the
+     technician applying the LimeLock barrier.
+     ============================================================ */
+  var canvas = document.getElementById("spray");
+  if (canvas && !reduce){
+    var ctx = canvas.getContext("2d");
+    var dpr = Math.min(window.devicePixelRatio||1, 2);
+    var W=0, H=0, particles=[], running=true, raf;
+
+    function size(){
+      var hero = canvas.parentElement;
+      W = hero.clientWidth; H = hero.clientHeight;
+      canvas.width = W*dpr; canvas.height = H*dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    size();
+    window.addEventListener("resize", size);
+
+    // nozzle near lower-left, spraying up & to the right across the hero
+    function nozzle(){ return { x: W*0.02, y: H*0.86 }; }
+
+    function spawn(){
+      var n = nozzle();
+      // broad up-and-right fan so the mist sweeps across ~60% of the width
+      var ang = -0.12 - Math.random()*1.05;   // nearly-horizontal → up-right
+      var sp = 1.3 + Math.random()*3.3;
+      var r = 0.3 + Math.random()*Math.random()*1.5;
+      particles.push({
+        x:n.x + (Math.random()-0.5)*6,
+        y:n.y + (Math.random()-0.5)*6,
+        vx:Math.cos(ang)*sp*2.0,
+        vy:Math.sin(ang)*sp*2.0,
+        life:0, max:240+Math.random()*220,
+        r:r,
+        a:0.30+Math.random()*0.45
+      });
+    }
+
+    var cap = window.innerWidth < 760 ? 520 : 1150;
+
+    function frame(){
+      if (!running) return;
+      ctx.clearRect(0,0,W,H);
+      // emit — lots of tiny droplets per frame for a dense, drifting mist
+      var emit = window.innerWidth < 760 ? 11 : 22;
+      for (var i=0;i<emit;i++){ if (particles.length<cap) spawn(); }
+      var reach = W*0.62;               // the mist spans ~60% of the width, then dissolves
+      for (var j=particles.length-1;j>=0;j--){
+        var p=particles[j];
+        p.life++;
+        p.x+=p.vx; p.y+=p.vy;
+        p.vx+=(Math.random()-0.5)*0.05;  // air turbulence → drifting mist
+        p.vy+=0.01;                       // faint gravity
+        p.vx*=0.99; p.vy*=0.99;
+        var t=p.life/p.max;
+        if (t>=1 || p.x>reach+40 || p.y>H+20 || p.y<-40){ particles.splice(j,1); continue; }
+        var rf=Math.max(0, Math.min(1,(reach - p.x)/(W*0.26))); // fade out toward 60%
+        var alpha=p.a*(1-t)*(t<0.1?t/0.1:1)*rf;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r*(1+t*0.4),0,6.283); // stays small
+        ctx.fillStyle="rgba(140,236,104,"+alpha.toFixed(3)+")";
+        ctx.fill();
+      }
+      raf=requestAnimationFrame(frame);
+    }
+    frame();
+
+    // pause when hero off-screen (perf)
+    if ("IntersectionObserver" in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          running=e.isIntersecting;
+          if (running){ frame(); } else if (raf){ cancelAnimationFrame(raf); }
+        });
+      },{threshold:0}).observe(canvas);
+    }
+    document.addEventListener("visibilitychange", function(){
+      running=!document.hidden;
+      if (running) frame(); else if (raf) cancelAnimationFrame(raf);
+    });
+  }
+})();
+</script>
+
+<!-- pest profile modal -->
+<div class="pmodal-scrim" id="pmScrim" aria-hidden="true"></div>
+<div class="pmodal" id="pmodal" role="dialog" aria-modal="true" aria-labelledby="pmTitle" aria-hidden="true">
+  <button class="pmodal__close" id="pmClose" aria-label="Close">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+  </button>
+  <div class="pmodal__media"><img id="pmImg" alt="" loading="lazy" /><span class="pmodal__credit" id="pmCredit"></span></div>
+  <div class="pmodal__body">
+    <span class="eyebrow">Pest profile</span>
+    <h3 id="pmTitle"></h3>
+    <p class="pmodal__intro" id="pmIntro"></p>
+    <div class="pmodal__sec"><h4>Where they hide &amp; what draws them</h4><p id="pmPrefs"></p></div>
+    <div class="pmodal__sec"><h4>Natural prevention tips</h4><ul class="pmodal__tips" id="pmTips"></ul></div>
+    <a class="btn btn--primary pmodal__cta" href="#quote" id="pmCta">Lock this pest out — free quote
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var IMGBASE="https://commons.wikimedia.org/wiki/Special:FilePath/";
+  var ORDER=["roaches","termites","mosquitoes","ants","rodents","fleas","wasps","spiders"];
+  var PESTS={
+    roaches:{name:"Roaches & Palmetto Bugs", file:"American-cockroach.jpg",
+      intro:"The Florida “palmetto bug” is really the American cockroach — the state’s largest common roach, often 1.5–2 inches long and a strong flier in the summer heat.",
+      prefs:"They love warm, humid, dark, damp places: drains and sewers, mulch beds, wall voids, under sinks, and around water meters. They move indoors for moisture and food, especially during the rainy season.",
+      tips:["Fix leaks and run a dehumidifier or AC to cut indoor humidity","Seal gaps around pipes, doors, and the slab","Keep mulch and palm debris pulled back from the foundation","Store food sealed and take the trash out promptly","Keep drains clean and cover them overnight"]},
+    termites:{name:"Termites", file:"Coptotermes_formosanus_shiraki_USGov_k8204-7.jpg",
+      intro:"Subterranean and Formosan termites quietly eat structural wood, and Florida’s warmth keeps them active year-round — the costliest pest a Gulf Coast home can face.",
+      prefs:"They need moist soil contact and cellulose — wood, cardboard, and paper. Colonies build mud tubes from the soil up to wood and are drawn to leaks, wood-to-ground contact, and buried debris.",
+      tips:["Keep soil and mulch below the slab and siding line","Fix leaks and direct downspouts away from the foundation","Remove wood debris, cardboard, and stumps near the house","Keep 18 inches of clearance between soil and any wood","Watch for mud tubes and “coffee-ground” frass — and get an annual inspection"]},
+    mosquitoes:{name:"Mosquitoes", file:"Aedes_aegypti.jpg",
+      intro:"On the Gulf Coast, mosquitoes breed fast in standing water and peak from spring through fall, making evenings on the lanai miserable.",
+      prefs:"They lay eggs in the smallest amounts of standing water — bromeliads, gutters, plant saucers, tarps, tires, and birdbaths — and rest in shady shrubs and tall grass. Most active at dawn and dusk.",
+      tips:["Dump standing water weekly from saucers, buckets, toys, and tarps","Flush out bromeliads and keep gutters clean","Change birdbath and pet water every few days","Keep grass and shrubs trimmed to reduce resting spots","Screen the lanai and add fans — mosquitoes are weak fliers"]},
+    ants:{name:"Ants", file:"Fire_ants_01.jpg",
+      intro:"From stinging fire ants in the yard to tiny ghost and white-footed ants on the counter, Florida has ants working year-round.",
+      prefs:"They forage for sweet and greasy foods and moisture, trailing along counters, baseboards, and slab cracks. Fire ants build mounds in sunny turf, especially after rain.",
+      tips:["Wipe up crumbs and spills and store food sealed","Fix moisture problems and leaks","Caulk entry cracks and around pipes","Keep mulch and branches off the house","Flag fire-ant mounds and don’t disturb them — treat, don’t kick"]},
+    rodents:{name:"Rodents", file:"House_Rat_David_Raju.jpg",
+      intro:"Roof rats are Florida’s most common rodent invader — agile climbers that nest in attics, soffits, and trees, along with the occasional house mouse.",
+      prefs:"They seek warm attics, garages, and wall voids, and feed on fruit trees, pet food, and clutter. They enter through gaps as small as a quarter and travel along wires and branches.",
+      tips:["Seal gaps around eaves, vents, and pipes (¼ inch or larger)","Trim tree limbs back 3+ feet from the roof","Store pet food and pantry items in sealed containers","Keep garbage lidded and clear fallen fruit","Declutter garages and attics; listen for scratching at night"]},
+    fleas:{name:"Fleas & Ticks", file:"%D0%9A%D0%BE%D1%88%D0%B0%D1%87%D1%8C%D1%8F_%D0%B1%D0%BB%D0%BE%D1%85%D0%B0.jpg",
+      intro:"Fleas and ticks thrive in Florida’s humidity, hitching in on pets and wildlife and settling into yards, carpets, and pet bedding.",
+      prefs:"They favor shady, humid spots — under decks, tall grass, and leaf litter — plus pet resting areas indoors. Fleas lay eggs in carpet and bedding; ticks wait on grass tips to latch on.",
+      tips:["Keep pets on vet-recommended flea and tick prevention","Wash pet bedding weekly and vacuum often (empty the bag outside)","Mow regularly and clear leaf litter","Block wildlife from nesting under decks and sheds","Check and bathe pets after time outdoors"]},
+    wasps:{name:"Wasps & Hornets", file:"Wasp_colony.jpg",
+      intro:"Paper wasps, yellowjackets, and hornets build nests under eaves, in shrubs, and in wall voids — a real sting risk through the warm months.",
+      prefs:"They pick sheltered spots to nest — eaves, soffits, porch ceilings, grills, and cavities — and are drawn to sweet drinks, protein, and flowering plants.",
+      tips:["Knock down new, empty nests early in spring before they grow","Seal soffit and wall gaps where nests start","Keep outdoor trash and recycling tightly lidded","Cover sweet drinks and food outdoors","Check eaves, grills, and playsets regularly — never swat near an active nest"]},
+    spiders:{name:"Spiders & More", file:"Common_House_Spider_2.jpg",
+      intro:"Most Florida spiders are harmless and even helpful, but webs — and the rare widow or recluse — make control worthwhile, along with silverfish, earwigs, and seasonal lovebugs.",
+      prefs:"They settle into quiet, undisturbed corners — garages, closets, eaves, and clutter — where they hunt other insects. More spiders usually means more prey insects nearby.",
+      tips:["Reduce clutter and knock down webs regularly","Seal cracks and add door sweeps and screens","Swap white exterior bulbs for yellow “bug” lights to attract fewer insects","Keep woodpiles and debris away from the perimeter","Control the insects spiders feed on — remove the food source"]}
+  };
+
+  var scrim=document.getElementById("pmScrim"), modal=document.getElementById("pmodal");
+  if(!scrim||!modal) return;
+  var img=document.getElementById("pmImg"), credit=document.getElementById("pmCredit"),
+      title=document.getElementById("pmTitle"), intro=document.getElementById("pmIntro"),
+      prefs=document.getElementById("pmPrefs"), tips=document.getElementById("pmTips"),
+      closeBtn=document.getElementById("pmClose"), cta=document.getElementById("pmCta");
+  var lastFocus=null;
+
+  function openPest(key){
+    var p=PESTS[key]; if(!p) return;
+    lastFocus=document.activeElement;
+    img.src=IMGBASE+p.file+"?width=800"; img.alt="Photo of "+p.name;
+    credit.innerHTML='Photo: <a href="https://commons.wikimedia.org/wiki/File:'+p.file+'" target="_blank" rel="noopener">Wikimedia Commons</a>';
+    title.textContent=p.name; intro.textContent=p.intro; prefs.textContent=p.prefs;
+    tips.innerHTML=p.tips.map(function(t){ return '<li><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#5FC93D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>'+t+"</span></li>"; }).join("");
+    scrim.classList.add("show"); modal.classList.add("show");
+    modal.setAttribute("aria-hidden","false"); scrim.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+    closeBtn.focus();
+  }
+  function closePest(){
+    scrim.classList.remove("show"); modal.classList.remove("show");
+    modal.setAttribute("aria-hidden","true"); scrim.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+    if(lastFocus&&lastFocus.focus) lastFocus.focus();
+  }
+  closeBtn.addEventListener("click",closePest);
+  scrim.addEventListener("click",closePest);
+  cta.addEventListener("click",closePest);
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&modal.classList.contains("show")) closePest(); });
+
+  // make each pest card clickable
+  document.querySelectorAll("#pests .pest").forEach(function(card,i){
+    var key=ORDER[i]; if(!key||!PESTS[key]) return;
+    card.setAttribute("data-pest",key);
+    card.setAttribute("role","button");
+    card.setAttribute("tabindex","0");
+    card.setAttribute("aria-label",PESTS[key].name+" — view pest profile");
+    if(!card.querySelector(".pest__more")){
+      var m=document.createElement("span"); m.className="pest__more";
+      m.innerHTML='View profile <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+      card.appendChild(m);
+    }
+    card.addEventListener("click",function(){ openPest(key); });
+    card.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openPest(key); } });
+  });
+})();
+</script>
+
+<!-- lime-glow halo around the cursor + hidden pests it reveals -->
+<div class="cur-glow" id="curGlow" aria-hidden="true"></div>
+<div class="cur-glow2" id="curGlow2" aria-hidden="true"></div>
+<script>
+(function(){
+  "use strict";
+  // desktop pointers only — touch devices keep the normal experience
+  if(!window.matchMedia || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  var glow=document.getElementById('curGlow'), glow2=document.getElementById('curGlow2');
+  if(!glow) return;
+
+  // pest silhouettes (roach, ant, spider) scattered through the page
+  var ICONS=[
+    '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="27" rx="9" ry="13"/><circle cx="24" cy="12" r="4"/><path d="M20 9 15 5M28 9l5-4M15 22l-7-3M33 22l7-3M14 30l-7 1M34 30l7 1M16 38l-5 4M32 38l5 4"/></svg>',
+    '<svg viewBox="0 0 48 48"><circle cx="24" cy="12" r="4"/><circle cx="24" cy="24" r="5"/><ellipse cx="24" cy="37" rx="6" ry="7"/><path d="M19 24l-8-3M29 24l8-3M21 8l-3-3M27 8l3-3"/></svg>',
+    '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="28" rx="6.5" ry="7.5"/><circle cx="24" cy="18" r="3.6"/><path d="M21 16C15 12 12 12 8 9"/><path d="M20 21C13 19 10 20 6 18"/><path d="M20 26C13 26 10 29 7 30"/><path d="M21 31C15 33 13 37 11 40"/><path d="M27 16C33 12 36 12 40 9"/><path d="M28 21C35 19 38 20 42 18"/><path d="M28 26C35 26 38 29 41 30"/><path d="M27 31C33 33 35 37 37 40"/></svg>'
+  ];
+  var bugs=[];
+  [['.hero',4],['#pests',3],['#process',2],['#why',3],['#area',2],['#reviews',2],['.footer',2]].forEach(function(h){
+    var el=document.querySelector(h[0]); if(!el) return;
+    if(getComputedStyle(el).position==='static') el.style.position='relative';
+    for(var i=0;i<h[1];i++){
+      var b=document.createElement('span'); b.className='bug';
+      var sz=22+Math.random()*18; b.style.width=sz+'px'; b.style.height=sz+'px';
+      b.style.left=(5+Math.random()*78)+'%'; b.style.top=(12+Math.random()*68)+'%';
+      b.style.transform='rotate('+Math.floor(Math.random()*360)+'deg)';
+      b.innerHTML=ICONS[Math.floor(Math.random()*ICONS.length)];
+      el.appendChild(b); bugs.push(b);
+    }
+  });
+
+  var mx=innerWidth/2, my=-200, gx=mx, gy=my, seen=false;
+  addEventListener('mousemove',function(e){ mx=e.clientX; my=e.clientY; if(!seen){ seen=true; glow.style.opacity=1; if(glow2)glow2.style.opacity=1; } },{passive:true});
+  addEventListener('mouseout',function(e){ if(!e.relatedTarget){ glow.style.opacity=0; if(glow2)glow2.style.opacity=0; } });
+
+  var RAD=170;
+  function loop(){
+    gx+=(mx-gx)*0.15; gy+=(my-gy)*0.15;   // small delay behind the cursor
+    glow.style.transform='translate3d('+gx+'px,'+gy+'px,0)';
+    if(glow2) glow2.style.transform='translate3d('+gx+'px,'+gy+'px,0)';
+    for(var i=0;i<bugs.length;i++){
+      var b=bugs[i], r=b.getBoundingClientRect();
+      if(r.bottom<-60||r.top>innerHeight+60){ if(b.style.opacity!=='0') b.style.opacity='0'; continue; }
+      var dx=gx-(r.left+r.width/2), dy=gy-(r.top+r.height/2), d=Math.sqrt(dx*dx+dy*dy);
+      var t=d<RAD?(1-d/RAD):0;
+      b.style.opacity=(t*t*0.92).toFixed(3);
+    }
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

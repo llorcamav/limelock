@@ -1,0 +1,48 @@
+<!--
+  SAVED FOR LATER REUSE — "Barrier active" protection panel
+  Removed from the hero on request; keep for use in a different area.
+  Self-contained: paste the <style> once and the markup wherever needed.
+  Designed for a dark background. Colors use the site's CSS variables
+  (--carbon-2, --void-2, --line, --lime, etc.) if present; otherwise
+  swap in literal values.
+-->
+<style>
+.panel{position:relative;background:linear-gradient(160deg,var(--carbon-2,#171a14),var(--void-2,#0d0f0c));border:1px solid var(--line,rgba(255,255,255,.09));border-radius:24px;padding:26px;box-shadow:0 40px 80px -50px #000}
+.panel__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.panel__status{font-family:var(--ff-mono,monospace);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--lime,#5FC93D);display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--lime,#5FC93D);box-shadow:0 0 0 0 rgba(95,201,61,.6);animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(95,201,61,.55)}70%{box-shadow:0 0 0 10px rgba(95,201,61,0)}100%{box-shadow:0 0 0 0 rgba(95,201,61,0)}}
+.panel__home{position:relative;aspect-ratio:16/11;border-radius:14px;background:radial-gradient(120% 120% at 50% 120%,rgba(95,201,61,.1),transparent 60%),var(--void,#0A0B09);border:1px solid var(--line-2,rgba(255,255,255,.05));overflow:hidden;display:grid;place-items:center}
+.panel__home svg{width:74%;height:auto;color:var(--bone,#F3F6EE)}
+.panel__metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.metric{background:var(--void,#0A0B09);border:1px solid var(--line-2,rgba(255,255,255,.05));border-radius:12px;padding:13px 14px}
+.metric b{font-family:var(--ff-mono,monospace);font-size:18px;color:var(--bone,#F3F6EE);display:block;letter-spacing:-.02em}
+.metric span{font-size:11px;color:var(--muted,#9AA08F);letter-spacing:.04em}
+</style>
+
+<div class="panel">
+  <div class="panel__top">
+    <span class="panel__status"><span class="dot"></span>Barrier active</span>
+    <span style="font-family:var(--ff-mono,monospace);font-size:11px;color:var(--muted,#9AA08F)">LL-SRQ</span>
+  </div>
+  <div class="panel__home">
+    <svg viewBox="0 0 200 140" fill="none" aria-hidden="true">
+      <!-- protective lime ring -->
+      <ellipse cx="100" cy="118" rx="86" ry="14" stroke="#5FC93D" stroke-width="1.4" stroke-dasharray="4 5" opacity=".7"/>
+      <!-- house -->
+      <path d="M40 70 100 32 160 70" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M52 64v50h96V64" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+      <rect x="86" y="86" width="28" height="28" stroke="currentColor" stroke-width="2.2"/>
+      <rect x="62" y="78" width="16" height="14" stroke="currentColor" stroke-width="2" opacity=".7"/>
+      <rect x="122" y="78" width="16" height="14" stroke="currentColor" stroke-width="2" opacity=".7"/>
+      <!-- lime seal shield -->
+      <path d="M100 8c7 4 14 5 20 5-1 18-8 26-20 31-12-5-19-13-20-31 6 0 13-1 20-5Z" fill="#5FC93D" opacity=".16" stroke="#5FC93D" stroke-width="1.6"/>
+      <path d="M92 21l6 6 11-11" stroke="#5FC93D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+  </div>
+  <div class="panel__metrics">
+    <div class="metric"><b>24h</b><span>Response</span></div>
+    <div class="metric"><b>4.9★</b><span>Local rating</span></div>
+    <div class="metric"><b>100%</b><span>Guaranteed</span></div>
+  </div>
+</div>

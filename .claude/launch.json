@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "limelock",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "C:\\Users\\llorc\\AppData\\Local\\Temp\\claude\\C--Users-llorc-OneDrive-Desktop-Lime-Lock\\83250e56-8220-4333-be1f-3eff9f44c2b7\\scratchpad\\serve.ps1"
+      ],
+      "port": 8099
+    }
+  ]
+}
