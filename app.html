@@ -249,7 +249,12 @@ button.row:hover{background:var(--carbon-2)}
   :root{--sidebar:0px}
   .app{grid-template-columns:minmax(0,1fr);grid-template-areas:"topbar" "nav" "main"}
   .sidebar{grid-area:nav;position:sticky;top:64px;height:auto;flex-direction:row;overflow-x:auto;gap:8px;padding:12px 14px;border-right:0;border-bottom:1px solid var(--line);z-index:30}
+  /* auto-hide header on scroll-down (mobile only) */
+  .topbar,.sidebar{transition:transform .3s var(--ease);will-change:transform}
+  .app.navhide .topbar{transform:translateY(-100%)}
+  .app.navhide .sidebar{transform:translateY(calc(-100% - 72px))}
   .sidebar__logo,.sidebar__role,.sidebar__foot{display:none}
+  #sideNav{flex-direction:row !important;gap:8px;flex:0 0 auto}
   .navitem{width:auto;white-space:nowrap;padding:11px 15px}.navitem .count{display:none}
   .account__name,.account__meta{display:none}.topbar__title span{display:none}
 }
@@ -884,6 +889,24 @@ button.row:hover{background:var(--carbon-2)}
   document.getElementById('logout').addEventListener('click',function(){ document.getElementById('app').classList.remove('show'); document.getElementById('login').style.display='grid'; });
 
   initJobs();
+})();
+</script>
+<script>
+/* Mobile only: the sticky header shows ONLY when scrolled fully to the top;
+   any scroll away from the top hides it. Desktop is untouched. */
+(function(){
+  var mq=window.matchMedia('(max-width:860px)');
+  var app=document.getElementById('app');
+  if(!app) return;
+  var ticking=false;
+  function update(){
+    ticking=false;
+    if(!mq.matches){ app.classList.remove('navhide'); return; }
+    var y=window.pageYOffset||document.documentElement.scrollTop||0;
+    app.classList.toggle('navhide', y>12);   // shown only at the very top
+  }
+  window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(update); } },{passive:true});
+  if(mq.addEventListener) mq.addEventListener('change',update); else if(mq.addListener) mq.addListener(update);
 })();
 </script>
 </body>

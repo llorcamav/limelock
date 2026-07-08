@@ -161,9 +161,9 @@ button{font-family:inherit;cursor:pointer}
   linear-gradient(to bottom, rgba(10,11,9,.42) 0%, transparent 24%, transparent 44%, rgba(10,11,9,.88) 86%, var(--void) 100%)}
 #spray{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
 .hero__inner{position:relative;z-index:2;max-width:100%;margin-inline:0}
-.hero__copy{max-width:460px;text-shadow:0 2px 26px rgba(5,6,5,.5)}
+.hero__copy{max-width:372px;margin-left:clamp(0px,4vw,60px);text-shadow:0 2px 26px rgba(5,6,5,.5)}
 
-.hero h1{font-size:clamp(40px,6vw,76px);letter-spacing:-.035em}
+.hero h1{font-size:clamp(46px,6.3vw,75px);letter-spacing:-.035em}
 .hero h1 .out{color:var(--lime);position:relative;display:inline-block}
 .hero h1 .out::after{content:"";position:absolute;left:0;right:0;bottom:.07em;height:.5em;background:var(--lime-soft);z-index:-1;border-radius:4px;transform:scaleX(0);transform-origin:left;animation:swipe 1s var(--ease) .5s forwards}
 @keyframes swipe{to{transform:scaleX(1)}}
@@ -368,10 +368,10 @@ button{font-family:inherit;cursor:pointer}
    Custom cursor — a lime glow that reveals pests hiding in the page
    ============================================================ */
 .cur-glow{position:fixed;top:0;left:0;pointer-events:none;opacity:0;transition:opacity .35s ease;z-index:9998;will-change:transform;
-  width:200px;height:200px;margin:-100px 0 0 -100px;border-radius:50%;
-  background:radial-gradient(circle,rgba(95,201,61,.24),rgba(95,201,61,.08) 42%,transparent 70%);filter:blur(6px);mix-blend-mode:screen}
+  width:100px;height:100px;margin:-50px 0 0 -50px;border-radius:50%;
+  background:radial-gradient(circle,rgba(95,201,61,.24),rgba(95,201,61,.08) 42%,transparent 70%);filter:blur(4px);mix-blend-mode:screen}
 .cur-glow2{position:fixed;top:0;left:0;pointer-events:none;opacity:0;transition:opacity .35s ease;z-index:9999;will-change:transform;
-  width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;
+  width:27px;height:27px;margin:-13.5px 0 0 -13.5px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,255,255,.32),rgba(255,255,255,.10) 42%,transparent 70%);mix-blend-mode:screen}
 .bug{position:absolute;pointer-events:none;opacity:0;color:var(--lime);z-index:4;will-change:opacity}
 .bug svg{width:100%;height:100%;display:block;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(95,201,61,.55))}
@@ -1143,9 +1143,14 @@ button{font-family:inherit;cursor:pointer}
     }
   });
 
-  var mx=innerWidth/2, my=-200, gx=mx, gy=my, seen=false;
-  addEventListener('mousemove',function(e){ mx=e.clientX; my=e.clientY; if(!seen){ seen=true; glow.style.opacity=1; if(glow2)glow2.style.opacity=1; } },{passive:true});
-  addEventListener('mouseout',function(e){ if(!e.relatedTarget){ glow.style.opacity=0; if(glow2)glow2.style.opacity=0; } });
+  var mx=innerWidth/2, my=-200, gx=mx, gy=my;
+  function showGlow(){ glow.style.opacity=1; if(glow2)glow2.style.opacity=1; }
+  function hideGlow(){ glow.style.opacity=0; if(glow2)glow2.style.opacity=0; }
+  addEventListener('mousemove',function(e){ mx=e.clientX; my=e.clientY; showGlow(); },{passive:true});
+  // hide when the pointer leaves the page or the window loses focus; restore on return
+  document.documentElement.addEventListener('mouseleave',hideGlow);
+  document.documentElement.addEventListener('mouseenter',showGlow);
+  window.addEventListener('blur',hideGlow);
 
   var RAD=170;
   function loop(){
