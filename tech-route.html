@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>LimeLock — Tech Route</title>
+<meta name="description" content="LimeLock technician route — tablet prototype. Sign in, work your stops, file reports." />
+<meta name="theme-color" content="#0A0B09" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --void:#0A0B09; --void-2:#0d0f0c; --carbon:#121410; --carbon-2:#171a14; --raise:#1d211a;
+  --lime:#5FC93D; --lime-glow:#8BEE57; --lime-deep:#3E9A26; --lime-soft:rgba(95,201,61,.14);
+  --bone:#F3F6EE; --muted:#9AA08F; --muted-2:#6c715f;
+  --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.05);
+  --warn:#E8A53D; --warn-soft:rgba(232,165,61,.14);
+  --danger:#E5564B; --danger-soft:rgba(229,86,75,.14);
+  --ff-display:"Bricolage Grotesque",system-ui,sans-serif;
+  --ff-body:"Inter",system-ui,sans-serif;
+  --ff-mono:"Space Mono",ui-monospace,monospace;
+  --radius:20px; --radius-sm:14px; --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--void);color:var(--bone);font-family:var(--ff-body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+h1,h2,h3,h4{font-family:var(--ff-display);font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.05}
+p{margin:0}button{font-family:inherit;cursor:pointer;color:inherit}svg{display:block}
+::selection{background:var(--lime);color:#062307}
+:focus-visible{outline:3px solid var(--lime-glow);outline-offset:2px}
+.mono{font-family:var(--ff-mono)}
+.eyebrow{font-family:var(--ff-mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
+
+/* app frame */
+#app{min-height:100dvh;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:900px;margin:0 auto;padding:0 clamp(16px,3vw,28px)}
+
+/* ---------- badges ---------- */
+.badge{display:inline-flex;align-items:center;gap:7px;font-family:var(--ff-mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.badge--ok{color:var(--lime);background:var(--lime-soft);border-color:transparent}
+.badge--warn,.badge--live{color:var(--warn);background:var(--warn-soft);border-color:transparent}
+.badge--live::before{animation:blink 1.2s infinite}
+.badge--up{color:var(--lime);background:var(--lime-soft);border-color:transparent}
+.badge--danger{color:var(--danger);background:var(--danger-soft);border-color:transparent}
+@keyframes blink{50%{opacity:.2}}
+
+/* ---------- buttons ---------- */
+.bigbtn{width:100%;min-height:64px;display:inline-flex;align-items:center;justify-content:center;gap:12px;font-weight:700;font-size:19px;border-radius:999px;border:1px solid transparent;background:var(--lime);color:#062307;transition:transform .15s var(--ease),background .2s,opacity .2s}
+.bigbtn svg{width:22px;height:22px}
+.bigbtn:active{transform:scale(.985)}
+.bigbtn:hover{background:var(--lime-glow)}
+.bigbtn--ghost{background:transparent;color:var(--bone);border-color:var(--line)}
+.bigbtn--ghost:hover{border-color:var(--lime);color:var(--lime);background:transparent}
+.bigbtn--warn{background:var(--warn);color:#2a1c04}
+.bigbtn--warn:hover{filter:brightness(1.08)}
+.bigbtn:disabled{opacity:.4;cursor:not-allowed}
+.minibtn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:54px;padding:0 20px;font-weight:600;font-size:16px;border-radius:14px;border:1px solid var(--line);background:var(--carbon-2);color:var(--bone);transition:border-color .2s,background .2s,transform .12s}
+.minibtn svg{width:20px;height:20px;color:var(--lime)}
+.minibtn:active{transform:scale(.97)}
+.minibtn:hover{border-color:var(--lime)}
+.iconbtn{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;border:1px solid var(--line);background:var(--carbon-2);color:var(--bone)}
+.iconbtn svg{width:22px;height:22px}
+.iconbtn:hover{border-color:var(--lime);color:var(--lime)}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:30;background:rgba(10,11,9,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top__in{display:flex;align-items:center;gap:14px;height:72px}
+.top__logo{height:34px;width:auto}
+.top__sp{flex:1}
+.top__who{display:flex;align-items:center;gap:10px}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--ff-display);font-weight:800;font-size:15px;background:linear-gradient(145deg,var(--lime),var(--lime-deep));color:#062307;flex:none}
+.avatar--sm{width:38px;height:38px;font-size:13px}
+.demo-pill{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);border:1px solid var(--line);border-radius:999px;padding:4px 9px}
+
+/* ---------- login ---------- */
+.login{flex:1;display:grid;place-items:center;padding:28px 0;position:relative;overflow:hidden}
+.login__bg{position:absolute;inset:0;background:radial-gradient(760px 480px at 72% 10%,rgba(95,201,61,.13),transparent 60%),radial-gradient(640px 560px at 6% 100%,rgba(95,201,61,.06),transparent 55%)}
+.login__card{position:relative;width:100%;max-width:560px;background:linear-gradient(162deg,var(--carbon-2),var(--void-2));border:1px solid var(--line);border-radius:26px;padding:clamp(26px,4vw,40px);box-shadow:0 50px 100px -55px #000}
+.login__logo{height:56px;width:auto;margin:0 auto 22px}
+.login h1{text-align:center;font-size:27px}
+.login__sub{text-align:center;color:var(--muted);margin:8px 0 26px}
+.techpick{display:flex;flex-direction:column;gap:12px}
+.techrow{display:flex;align-items:center;gap:16px;width:100%;text-align:left;padding:16px 18px;border-radius:18px;border:1px solid var(--line);background:var(--carbon);transition:border-color .18s,background .18s,transform .12s}
+.techrow:hover{border-color:var(--lime)}
+.techrow:active{transform:scale(.99)}
+.techrow__name{display:block;font-family:var(--ff-display);font-weight:700;font-size:18px}
+.techrow__sub{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.techrow__jobs{margin-left:auto;text-align:right;flex:none}
+.techrow__n{display:block;font-family:var(--ff-display);font-weight:800;font-size:22px;color:var(--lime);line-height:1}
+.techrow__nl{display:block;font-family:var(--ff-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2)}
+.login__foot{text-align:center;color:var(--muted-2);font-size:12.5px;margin-top:22px;font-family:var(--ff-mono);letter-spacing:.03em}
+
+/* ---------- content scroller ---------- */
+.screen{flex:1;display:flex;flex-direction:column;min-height:0}
+.scroll{flex:1;overflow-y:auto;padding-bottom:34px;-webkit-overflow-scrolling:touch}
+
+/* ---------- route hub ---------- */
+.hubhead{padding:26px 0 18px}
+.hubhead .eyebrow{margin-bottom:9px}
+.hubhead h1{font-size:30px}
+.hubhead p{color:var(--muted);margin-top:8px;font-size:15.5px}
+.progress{display:flex;align-items:center;gap:22px;background:linear-gradient(160deg,rgba(95,201,61,.1),var(--carbon));border:1px solid rgba(95,201,61,.26);border-radius:22px;padding:20px 24px;margin-bottom:22px}
+.ring{--p:0;flex:none;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:
+  radial-gradient(closest-side,var(--void) 72%,transparent 73% 100%),
+  conic-gradient(var(--lime) calc(var(--p)*1%),rgba(255,255,255,.1) 0)}
+.ring b{font-family:var(--ff-display);font-weight:800;font-size:22px}
+.ring span{font-family:var(--ff-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:1px}
+.progress__txt h3{font-size:20px;margin-bottom:4px}
+.progress__txt p{color:var(--muted);font-size:14px}
+.progress__txt b{color:var(--bone)}
+
+/* stop rows */
+.routelist{display:flex;flex-direction:column;gap:14px}
+.stop{position:relative;display:flex;gap:16px;align-items:stretch;width:100%;text-align:left;padding:18px;border-radius:20px;border:1px solid var(--line);background:var(--carbon);transition:border-color .18s,background .18s,transform .12s}
+.stop:hover{border-color:rgba(255,255,255,.2)}
+.stop:active{transform:scale(.995)}
+.stop--current{border-color:var(--lime);background:linear-gradient(155deg,rgba(95,201,61,.12),var(--carbon));box-shadow:0 20px 50px -34px rgba(95,201,61,.7)}
+.stop--done{opacity:.62}
+.stop__seq{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-family:var(--ff-display);font-weight:800;font-size:19px;background:var(--raise);color:var(--muted);border:1px solid var(--line)}
+.stop--current .stop__seq{background:var(--lime);color:#062307;border-color:transparent}
+.stop--done .stop__seq{background:var(--lime-soft);color:var(--lime);border-color:transparent}
+.stop__body{flex:1;min-width:0}
+.stop__top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px}
+.stop__time{font-family:var(--ff-mono);font-size:13px;color:var(--muted);letter-spacing:.02em}
+.stop__svc{display:block;font-family:var(--ff-display);font-weight:700;font-size:18px;line-height:1.15}
+.stop__cust{display:block;color:var(--muted);font-size:14.5px;margin-top:3px}
+.stop__cust b{color:var(--bone);font-weight:600}
+.stop__right{flex:none;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:8px}
+.stop__chev{width:26px;height:26px;color:var(--muted-2)}
+.stop--current .stop__chev{color:var(--lime)}
+.stop__drive{font-family:var(--ff-mono);font-size:11px;color:var(--muted-2);text-align:center;margin:-4px 0 -4px 62px}
+
+.hubcta{position:sticky;bottom:0;background:linear-gradient(to top,var(--void) 62%,transparent);padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px))}
+
+/* ---------- stop detail ---------- */
+.detailhead{padding:22px 0 6px}
+.backrow{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.back{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--muted);padding:9px 14px 9px 10px;border-radius:12px;border:1px solid var(--line);background:var(--carbon-2)}
+.back svg{width:19px;height:19px}
+.back:hover{color:var(--bone);border-color:var(--lime)}
+.d__cust{font-size:28px;margin:4px 0 6px}
+.d__meta{color:var(--muted);font-size:14.5px;font-family:var(--ff-mono)}
+.card{background:var(--carbon);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:14px}
+.card h4{font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px}
+.addr{display:flex;align-items:flex-start;gap:14px}
+.addr__pin{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--lime-soft);color:var(--lime)}
+.addr__pin svg{width:24px;height:24px}
+.addr__txt{flex:1;min-width:0}
+.addr__line{display:block;font-size:17px;font-weight:600}
+.addr__sub{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.twocol{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.twocol>*{flex:1;min-width:150px;margin-bottom:0}
+.fact{background:var(--carbon);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.fact .k{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.fact .v{font-size:17px;font-weight:600}
+.alert{display:flex;align-items:center;gap:13px;padding:15px 17px;border-radius:16px;margin-bottom:11px;font-size:15.5px;font-weight:600}
+.alert svg{width:24px;height:24px;flex:none}
+.alert--warn{background:var(--warn-soft);color:#F2C572;border:1px solid rgba(232,165,61,.3)}
+.alert--info{background:var(--lime-soft);color:var(--lime);border:1px solid rgba(95,201,61,.28)}
+.note{color:var(--bone);font-size:15.5px;line-height:1.55}
+.note--muted{color:var(--muted)}
+.lastvisit{color:var(--muted);font-size:14.5px;line-height:1.5}
+
+/* ---------- report form ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border-radius:13px;border:1px solid var(--line);background:var(--carbon-2);color:var(--bone);font-size:15px;font-weight:600;transition:border-color .15s,background .15s,color .15s,transform .1s}
+.chip:active{transform:scale(.96)}
+.chip svg{width:17px;height:17px;opacity:0;transition:opacity .15s}
+.chip--on{background:var(--lime-soft);border-color:var(--lime);color:var(--lime)}
+.chip--on svg{opacity:1}
+.chip--add{border-style:dashed;color:var(--muted)}
+textarea{width:100%;background:var(--void-2);border:1px solid var(--line);border-radius:14px;color:var(--bone);font-family:inherit;font-size:16px;padding:14px;resize:vertical;min-height:88px}
+textarea:focus{outline:none;border-color:var(--lime)}
+.photos{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.photo{width:76px;height:76px;border-radius:13px;background:var(--raise);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);position:relative;overflow:hidden}
+.photo svg{width:26px;height:26px}
+.photo--real{background:linear-gradient(135deg,#2a3320,#1a1e14)}
+.photo--real::after{content:"✓";position:absolute;right:5px;bottom:3px;color:var(--lime);font-size:13px;font-weight:700}
+.sigwrap{background:var(--void-2);border:1px dashed var(--line);border-radius:16px;padding:10px;position:relative}
+.sig{width:100%;height:170px;border-radius:10px;touch-action:none;display:block;background:transparent}
+.sig-ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted-2);font-size:15px;pointer-events:none}
+.sigbar{display:flex;align-items:center;justify-content:space-between;margin-top:10px;font-family:var(--ff-mono);font-size:12.5px;color:var(--muted)}
+.sigbar b{color:var(--lime)}
+.sigbar button{font-family:var(--ff-body);font-size:14px;color:var(--muted);border:1px solid var(--line);background:transparent;border-radius:10px;padding:8px 14px}
+.sigbar button:hover{color:var(--bone);border-color:var(--lime)}
+
+/* ---------- action bar ---------- */
+.actionbar{position:sticky;bottom:0;z-index:20;background:linear-gradient(to top,var(--void) 55%,rgba(10,11,9,.75) 85%,transparent);padding:16px 0 calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid transparent}
+.actionbar .wrap{display:flex;gap:12px}
+.actionbar .bigbtn{flex:1}
+.actionbar .mini-call{flex:none;width:auto;padding:0 22px}
+
+/* ---------- done ---------- */
+.done{flex:1;display:grid;place-items:center;text-align:center;padding:40px 0}
+.done__ring{width:116px;height:116px;border-radius:50%;display:grid;place-items:center;margin:0 auto 24px;background:var(--lime-soft);color:var(--lime)}
+.done__ring svg{width:60px;height:60px}
+.done h1{font-size:34px}
+.done p{color:var(--muted);margin:12px 0 26px;font-size:16px}
+.done__stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.done__stat{background:var(--carbon);border:1px solid var(--line);border-radius:18px;padding:18px 26px;min-width:120px}
+.done__stat b{display:block;font-family:var(--ff-display);font-weight:800;font-size:30px;color:var(--lime)}
+.done__stat span{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px;display:block}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,24px);z-index:80;background:var(--raise);border:1px solid var(--line);color:var(--bone);padding:14px 22px;border-radius:14px;font-weight:600;font-size:15px;box-shadow:0 24px 50px -24px #000;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;display:flex;align-items:center;gap:10px;max-width:90vw}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast svg{width:20px;height:20px;color:var(--lime);flex:none}
+
+@media (max-width:560px){
+  .hubhead h1{font-size:25px}.d__cust{font-size:24px}
+  .ring{width:78px;height:78px}.ring b{font-size:19px}
+  .stop__svc{font-size:16.5px}
+  .top__in{height:64px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast"></div>
+
+<script src="store.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ============ MOCK DATA ============ */
+  var TECHS=[
+    {id:'T08',name:'Marcus B.',init:'MB',terr:'Sarasota · Gulf Coast',jobs:4,hasroute:true},
+    {id:'T04',name:'Priya N.',init:'PN',terr:'Manatee County',jobs:0,hasroute:false},
+    {id:'T11',name:'Devon R.',init:'DR',terr:'Venice · South',jobs:0,hasroute:false}
+  ];
+  function freshRoute(){ return [
+    {id:'JOB-2088',seq:1,time:'8:00 AM',window:'8–10 AM',drive:null,cust:'Greg Halloran',loc:'Palmetto',addr:'704 8th Ave W, Palmetto, FL',phone:'(941) 555-0122',plan:'Quarterly Barrier · since 2023',service:'Quarterly barrier service',urgency:'Routine',
+      alerts:[],notes:'Recurring quarterly barrier. Treat exterior foundation and eaves; refresh perimeter.',last:'Apr 5 — all clear, barrier refreshed.',
+      areas:['Exterior foundation','Eaves','Perimeter','Garage','Entry points'],products:['Perimeter barrier','Granular bait','Web removal'],status:'scheduled'},
+    {id:'JOB-2065',seq:2,time:'10:30 AM',window:'10 AM–12 PM',drive:'25 min',cust:'Sofia Marin',loc:'Siesta Key',addr:'5022 Ocean Blvd, Siesta Key, FL',phone:'(941) 555-0137',plan:'One-time service',service:'Roach treatment — interior',urgency:'Routine',
+      alerts:[],notes:'Follow-up on kitchen activity reported last visit. Check under appliances.',last:'Jun 3 — moderate activity near dishwasher; sealed & baited.',
+      areas:['Kitchen','Under sinks','Pantry','Bathrooms','Appliance gaps'],products:['Pet-safe gel bait','Crack & crevice','IGR growth regulator'],status:'scheduled'},
+    {id:'JOB-2071',seq:3,time:'1:00 PM',window:'12–2 PM',drive:'20 min',cust:'Dana Rivera',loc:'Gulf Gate',addr:'2114 Gulf Gate Dr, Sarasota, FL',phone:'(941) 555-0148',plan:'Quarterly Barrier · since 2024',service:'Ant treatment — kitchen',urgency:'Urgent',
+      alerts:[{t:'warn',m:'Dog in home — pet-safe products only'}],notes:'Ants along the counter by the sink. Trace to entry point and treat.',last:'Apr 1 — quarterly barrier, all clear.',
+      areas:['Kitchen','Counters','Perimeter','Entry points','Baseboards'],products:['Pet-safe gel bait','Non-repellent spray','Exterior granule'],status:'scheduled'},
+    {id:'JOB-2080',seq:4,time:'3:30 PM',window:'2–4 PM',drive:'30 min',cust:'The Alvarez Family',loc:'Lakewood Ranch',addr:'14250 Covenant Way, Lakewood Ranch, FL',phone:'(941) 555-0166',plan:'Mosquito + Barrier',service:'Mosquito yard treatment',urgency:'Routine',
+      alerts:[{t:'warn',m:'Kids & dog in yard — pet-safe only'},{t:'info',m:'Gate code #4471'}],notes:'Treat backyard and lanai. Knock down standing-water breeding sites.',last:'May 20 — treated, low activity on recheck.',
+      areas:['Backyard','Lanai','Shrub line','Standing water','Fence line'],products:['Mosquito barrier fog','Larvicide','IGR growth regulator'],status:'scheduled'}
+  ];}
+
+  /* ============ STATE ============ */
+  var S={screen:'login',tech:null,route:[],stopId:null,sig:false,photos:0};
+  function cur(){ return S.route.filter(function(s){return s.status!=='completed';})[0]||null; }
+  function stopById(id){ return S.route.filter(function(s){return s.id===id;})[0]; }
+  function doneCount(){ return S.route.filter(function(s){return s.status==='completed';}).length; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  var ST={ scheduled:['badge--up','Scheduled'], enroute:['badge--live','Driving'], onsite:['badge--warn','On site'], completed:['badge--ok','Done'] };
+  function sbadge(s,isCurrent){ var b=ST[s]||ST.scheduled; var label=(s==='scheduled'&&isCurrent)?'Up next':b[1]; return '<span class="badge '+b[0]+'">'+label+'</span>'; }
+
+  var ICON={
+    check:'<path d="M20 6 9 17l-5-5"/>', chev:'<path d="m9 6 6 6-6 6"/>', back:'<path d="M19 12H5M11 18l-6-6 6-6"/>',
+    pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+    nav:'<path d="M3 11l19-9-9 19-2-8-8-2Z"/>', phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7A2 2 0 0 1 22 16.9z"/>',
+    car:'<path d="M5 17a2 2 0 1 0 4 0M15 17a2 2 0 1 0 4 0"/><path d="M3 17h-.5a.5.5 0 0 1-.5-.5V13l2-5h12l3 4 1 .5V16.5a.5.5 0 0 1-.5.5H19M9 17h6"/>',
+    arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>', warn:'<path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>', cam:'<path d="M3 7h4l2-2h6l2 2h4v12H3z"/><circle cx="12" cy="13" r="3.5"/>',
+    doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+    flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22V4"/>'
+  };
+  function svg(p,cls){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"'+(cls?' class="'+cls+'"':'')+'>'+p+'</svg>'; }
+
+  var APP=document.getElementById('app');
+
+  /* ============ RENDER ============ */
+  function render(){
+    if(S.screen==='login') return renderLogin();
+    if(S.screen==='route') return renderRoute();
+    if(S.screen==='stop') return renderStop();
+    if(S.screen==='report') return renderReport();
+    if(S.screen==='done') return renderDone();
+  }
+
+  function topbar(){
+    var who = S.tech? '<div class="top__who"><span class="avatar avatar--sm">'+esc(S.tech.init)+'</span></div>' : '';
+    return '<header class="top"><div class="wrap top__in">'+
+      '<img class="top__logo" src="limelock-mark.svg" alt="LimeLock" />'+
+      '<span class="demo-pill">Tablet demo</span><span class="top__sp"></span>'+ who +
+      '</div></header>';
+  }
+
+  /* ---- LOGIN ---- */
+  function renderLogin(){
+    APP.innerHTML =
+      '<div class="login"><div class="login__bg"></div>'+
+      '<div class="login__card">'+
+        '<img class="login__logo" src="limelock-mark.svg" alt="LimeLock" />'+
+        '<h1>Start your day</h1>'+
+        '<p class="login__sub">Tap your name to load today’s route.</p>'+
+        '<div class="techpick">'+
+          TECHS.map(function(t){
+            return '<button class="techrow" data-tech="'+t.id+'">'+
+              '<span class="avatar">'+esc(t.init)+'</span>'+
+              '<span><span class="techrow__name">'+esc(t.name)+'</span><span class="techrow__sub">'+esc(t.terr)+'</span></span>'+
+              '<span class="techrow__jobs">'+(t.hasroute
+                ? '<span class="techrow__n">'+t.jobs+'</span><span class="techrow__nl">stops today</span>'
+                : '<span class="techrow__nl" style="font-size:12px">No route</span>')+'</span>'+
+            '</button>';
+          }).join('')+
+        '</div>'+
+        '<p class="login__foot">Shared crew tablet · LimeLock field app</p>'+
+      '</div></div>';
+    APP.querySelectorAll('[data-tech]').forEach(function(b){
+      b.addEventListener('click',function(){
+        var t=TECHS.filter(function(x){return x.id===b.dataset.tech;})[0];
+        S.tech=t; S.route=t.hasroute?freshRoute():[]; S.screen='route'; render();
+      });
+    });
+  }
+
+  /* ---- ROUTE HUB ---- */
+  function renderRoute(){
+    if(!S.route.length){
+      APP.innerHTML=topbar()+'<div class="screen"><div class="scroll"><div class="wrap">'+
+        '<div class="hubhead"><span class="eyebrow">Monday · June 30</span><h1>No stops assigned</h1>'+
+        '<p>'+esc(S.tech.name.split(" ")[0])+', dispatch hasn’t put anything on your route yet. The demo route is loaded on <b>Marcus B.</b></p></div>'+
+        '<button class="minibtn" id="backlogin">'+svg(ICON.back)+'Switch tech</button>'+
+        '</div></div></div>';
+      document.getElementById('backlogin').addEventListener('click',function(){ S.screen='login'; render(); });
+      return;
+    }
+    var total=S.route.length, done=doneCount(), pct=Math.round(done/total*100);
+    var c=cur(); var remaining=total-done;
+    var next=c?('Next: <b>'+esc(c.service)+'</b> · '+esc(c.time)):'All stops complete 🎉';
+
+    var rows=S.route.map(function(s){
+      var isCur=c&&s.id===c.id;
+      var cls='stop'+(isCur?' stop--current':'')+(s.status==='completed'?' stop--done':'');
+      var urg=(s.urgency==='Urgent'&&s.status!=='completed')?'<span class="badge badge--danger">Urgent</span>':'';
+      var seqInner=s.status==='completed'?svg(ICON.check):s.seq;
+      var driveTag=(s.drive&&s.status!=='completed'&&isCur)?'<div class="stop__drive">'+svg(ICON.car,'')+'</div>':'';
+      return (s.drive&&s.seq>1?'<div class="stop__drive">'+esc(s.drive)+' drive · '+esc(s.loc)+'</div>':'')+
+      '<button class="'+cls+'" data-stop="'+s.id+'">'+
+        '<span class="stop__seq">'+seqInner+'</span>'+
+        '<span class="stop__body">'+
+          '<span class="stop__top"><span class="stop__time">'+esc(s.time)+'</span>'+urg+'</span>'+
+          '<span class="stop__svc">'+esc(s.service)+'</span>'+
+          '<span class="stop__cust"><b>'+esc(s.cust)+'</b> · '+esc(s.loc)+'</span>'+
+        '</span>'+
+        '<span class="stop__right">'+sbadge(s.status,isCur)+svg(ICON.chev,'stop__chev')+'</span>'+
+      '</button>';
+    }).join('');
+
+    var cta = c
+      ? '<button class="bigbtn" id="opencur">'+(c.status==='scheduled'?'Go to next stop':'Resume current stop')+svg(ICON.arrow)+'</button>'
+      : '<button class="bigbtn" id="finishday">Wrap up the day'+svg(ICON.flag)+'</button>';
+
+    APP.innerHTML=topbar()+
+      '<div class="screen"><div class="scroll"><div class="wrap">'+
+        '<div class="hubhead"><span class="eyebrow">Monday · June 30 · '+esc(S.tech.terr)+'</span>'+
+          '<h1>Your route, '+esc(S.tech.name.split(" ")[0])+'.</h1>'+
+          '<p>'+remaining+' of '+total+' stops left. Work top to bottom — tap a stop to open it.</p></div>'+
+        '<div class="progress"><div class="ring" style="--p:'+pct+'"><b>'+done+'/'+total+'</b><span>done</span></div>'+
+          '<div class="progress__txt"><h3>'+(remaining?remaining+' stop'+(remaining>1?'s':'')+' to go':'Route complete')+'</h3><p>'+next+'</p></div></div>'+
+        '<div class="routelist">'+rows+'</div>'+
+      '</div></div>'+
+      '<div class="hubcta"><div class="wrap">'+cta+'</div></div>'+
+      '</div>';
+
+    APP.querySelectorAll('[data-stop]').forEach(function(b){ b.addEventListener('click',function(){ S.stopId=b.dataset.stop; S.screen='stop'; render(); }); });
+    var oc=document.getElementById('opencur'); if(oc) oc.addEventListener('click',function(){ S.stopId=c.id; S.screen='stop'; render(); });
+    var fd=document.getElementById('finishday'); if(fd) fd.addEventListener('click',function(){ S.screen='done'; render(); });
+  }
+
+  /* ---- STOP DETAIL ---- */
+  function renderStop(){
+    var s=stopById(S.stopId); if(!s){ S.screen='route'; return render(); }
+    var isCur=cur()&&cur().id===s.id;
+
+    var actLabel={scheduled:'Start drive',enroute:'I’ve arrived',onsite:'Complete service'};
+    var actIcon={scheduled:ICON.car,enroute:ICON.pin,onsite:ICON.doc};
+    var btn = s.status==='completed'
+      ? '<button class="bigbtn bigbtn--ghost" id="toRoute">Back to route'+svg(ICON.arrow)+'</button>'
+      : '<button class="bigbtn'+(s.status==='enroute'?' bigbtn--warn':'')+'" id="advance">'+actLabel[s.status]+svg(actIcon[s.status])+'</button>';
+
+    var alertsHtml=s.alerts.map(function(a){
+      return '<div class="alert alert--'+(a.t==='info'?'info':'warn')+'">'+svg(a.t==='info'?ICON.info:ICON.warn)+'<span>'+esc(a.m)+'</span></div>';
+    }).join('');
+
+    APP.innerHTML=topbar()+
+      '<div class="screen"><div class="scroll"><div class="wrap">'+
+        '<div class="detailhead">'+
+          '<div class="backrow"><button class="back" id="back">'+svg(ICON.back)+'Route</button>'+sbadge(s.status,isCur)+
+            (s.urgency==='Urgent'&&s.status!=='completed'?'<span class="badge badge--danger">Urgent</span>':'')+'</div>'+
+          '<span class="eyebrow">Stop '+s.seq+' of '+S.route.length+' · '+esc(s.time)+'</span>'+
+          '<h1 class="d__cust">'+esc(s.cust)+'</h1>'+
+          '<p class="d__meta">'+esc(s.id)+' · '+esc(s.plan)+'</p>'+
+        '</div>'+
+
+        (alertsHtml||'')+
+
+        '<div class="card"><div class="addr">'+
+          '<span class="addr__pin">'+svg(ICON.pin)+'</span>'+
+          '<span class="addr__txt"><span class="addr__line">'+esc(s.addr)+'</span><span class="addr__sub">'+esc(s.loc)+' · arrival window '+esc(s.window)+'</span></span>'+
+        '</div><div style="display:flex;gap:12px;margin-top:16px">'+
+          '<button class="minibtn" id="nav" style="flex:1">'+svg(ICON.nav)+'Directions</button>'+
+          '<button class="minibtn" id="call" style="flex:1">'+svg(ICON.phone)+'Call</button>'+
+        '</div></div>'+
+
+        '<div class="twocol">'+
+          '<div class="fact"><div class="k">Service</div><div class="v">'+esc(s.service)+'</div></div>'+
+          '<div class="fact"><div class="k">Priority</div><div class="v">'+esc(s.urgency)+'</div></div>'+
+        '</div>'+
+
+        '<div class="card"><h4>Job notes</h4><p class="note">'+esc(s.notes)+'</p></div>'+
+        '<div class="card"><h4>Last visit</h4><p class="lastvisit">'+esc(s.last)+'</p></div>'+
+
+      '</div></div>'+
+      '<div class="actionbar"><div class="wrap">'+btn+'</div></div>'+
+      '</div>';
+
+    document.getElementById('back').addEventListener('click',function(){ S.screen='route'; render(); });
+    document.getElementById('nav').addEventListener('click',function(){ toast('Opening Maps to '+s.addr.split(',')[0]+'…',ICON.nav); });
+    document.getElementById('call').addEventListener('click',function(){ toast('Calling '+s.cust+' — '+s.phone,ICON.phone); });
+    var tr=document.getElementById('toRoute'); if(tr) tr.addEventListener('click',function(){ S.screen='route'; render(); });
+    var ad=document.getElementById('advance'); if(ad) ad.addEventListener('click',function(){ advance(s); });
+  }
+
+  function advance(s){
+    if(s.status==='scheduled'){ s.status='enroute'; toast('On your way to '+s.cust+'.',ICON.car); render(); }
+    else if(s.status==='enroute'){ s.status='onsite'; toast('Checked in at '+s.loc+'.',ICON.pin); render(); }
+    else if(s.status==='onsite'){ S.sig=false; S.photos=0; S.screen='report'; render(); }
+  }
+
+  /* ---- REPORT ---- */
+  function renderReport(){
+    var s=stopById(S.stopId); if(!s){ S.screen='route'; return render(); }
+    s._areas=s._areas||[]; s._products=s._products||[];
+
+    function chipRow(list,sel,kind){
+      return '<div class="chips">'+list.map(function(x){
+        var on=sel.indexOf(x)>-1;
+        return '<button class="chip'+(on?' chip--on':'')+'" data-kind="'+kind+'" data-val="'+esc(x)+'">'+svg(ICON.check)+esc(x)+'</button>';
+      }).join('')+'</div>';
+    }
+
+    APP.innerHTML=topbar()+
+      '<div class="screen"><div class="scroll"><div class="wrap">'+
+        '<div class="detailhead"><div class="backrow"><button class="back" id="back">'+svg(ICON.back)+'Cancel</button>'+sbadge('onsite',false)+'</div>'+
+          '<span class="eyebrow">Stop '+s.seq+' · '+esc(s.cust)+'</span>'+
+          '<h1 class="d__cust">File service report</h1>'+
+          '<p class="d__meta">'+esc(s.id)+' · '+esc(s.service)+'</p></div>'+
+
+        '<div class="card"><h4>Areas treated</h4>'+chipRow(s.areas,s._areas,'area')+'</div>'+
+        '<div class="card"><h4>Products applied</h4>'+chipRow(s.products,s._products,'prod')+'</div>'+
+        '<div class="card"><h4>Findings & notes</h4><textarea id="findings" placeholder="What you found and treated… (optional)"></textarea>'+
+          '<div class="photos" id="photos"><button class="photo" id="addphoto" aria-label="Add photo">'+svg(ICON.cam)+'</button></div></div>'+
+
+        '<div class="card"><h4>Customer signature</h4>'+
+          '<div class="sigwrap"><canvas class="sig" id="sig"></canvas><div class="sig-ph" id="sigph">Sign here with a finger</div></div>'+
+          '<div class="sigbar"><span id="sigstate">Not signed</span><button type="button" id="sigclear">Clear</button></div></div>'+
+
+      '</div></div>'+
+      '<div class="actionbar"><div class="wrap"><button class="bigbtn" id="finish" disabled>Finish stop & continue'+svg(ICON.check)+'</button></div></div>'+
+      '</div>';
+
+    document.getElementById('back').addEventListener('click',function(){ S.screen='stop'; render(); });
+    APP.querySelectorAll('.chip[data-kind]').forEach(function(b){
+      b.addEventListener('click',function(){
+        var arr=b.dataset.kind==='area'?s._areas:s._products; var v=b.dataset.val; var i=arr.indexOf(v);
+        if(i>-1) arr.splice(i,1); else arr.push(v);
+        b.classList.toggle('chip--on');
+      });
+    });
+    document.getElementById('addphoto').addEventListener('click',function(){
+      if(S.photos>=4){ toast('Max 4 photos in demo.',ICON.cam); return; }
+      S.photos++; var ph=document.createElement('span'); ph.className='photo photo--real'; ph.innerHTML=svg(ICON.cam);
+      this.parentNode.insertBefore(ph,this); toast('Photo added.',ICON.cam);
+    });
+    initSig();
+    document.getElementById('finish').addEventListener('click',function(){
+      s.status='completed';
+      s.report={areas:s._areas,products:s._products,findings:(document.getElementById('findings')||{}).value||'',photos:S.photos};
+      // push the completed service + report to the shared feed → CEO sees it live
+      if(window.LLStore && LLStore.addCompletion){
+        LLStore.addCompletion({ jobId:s.id, techId:S.tech.id, tech:S.tech.name, customer:s.cust, loc:s.loc,
+          address:s.addr, service:s.service, urgency:s.urgency, time:s.time,
+          areas:s._areas.slice(), products:s._products.slice(), findings:s.report.findings,
+          photos:S.photos, signed:true });
+      }
+      var more=cur();
+      if(more){ S.stopId=more.id; S.screen='route'; render(); toast(s.cust+' done — next stop ready.',ICON.check); }
+      else { S.screen='done'; render(); }
+    });
+  }
+
+  function initSig(){
+    var c=document.getElementById('sig'); if(!c) return;
+    var ph=document.getElementById('sigph'), state=document.getElementById('sigstate'), finish=document.getElementById('finish');
+    function size(){ var r=c.getBoundingClientRect(); var dpr=window.devicePixelRatio||1; c.width=Math.round(r.width*dpr); c.height=Math.round(r.height*dpr); var x=c.getContext('2d'); x.scale(dpr,dpr); x.lineWidth=2.6; x.lineCap='round'; x.lineJoin='round'; x.strokeStyle='#F3F6EE'; return x; }
+    var ctx=size();
+    var drawing=false,last=null;
+    function pt(e){ var r=c.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top]; }
+    function down(e){ c.setPointerCapture&&c.setPointerCapture(e.pointerId); drawing=true; last=pt(e);
+      if(!S.sig){ S.sig=true; ph.style.display='none'; state.innerHTML='<b>Signed ✓</b>'; finish.disabled=false; } }
+    function move(e){ if(!drawing)return; var p=pt(e); ctx.beginPath(); ctx.moveTo(last[0],last[1]); ctx.lineTo(p[0],p[1]); ctx.stroke(); last=p; }
+    function up(){ drawing=false; }
+    c.addEventListener('pointerdown',down); c.addEventListener('pointermove',move);
+    window.addEventListener('pointerup',up);
+    document.getElementById('sigclear').addEventListener('click',function(){ ctx.clearRect(0,0,c.width,c.height); S.sig=false; ph.style.display='grid'; state.textContent='Not signed'; finish.disabled=true; });
+  }
+
+  /* ---- DONE ---- */
+  function renderDone(){
+    var total=S.route.length, done=doneCount();
+    var photos=S.route.reduce(function(n,s){return n+((s.report&&s.report.photos)||0);},0);
+    APP.innerHTML=topbar()+
+      '<div class="screen"><div class="scroll"><div class="wrap"><div class="done">'+
+        '<div><div class="done__ring">'+svg(ICON.check)+'</div>'+
+        '<h1>Route complete</h1>'+
+        '<p>Nice work, '+esc(S.tech.name.split(" ")[0])+'. Every stop is filed and synced to the office.</p>'+
+        '<div class="done__stats">'+
+          '<div class="done__stat"><b>'+done+'</b><span>Stops done</span></div>'+
+          '<div class="done__stat"><b>'+total+'</b><span>Reports filed</span></div>'+
+          '<div class="done__stat"><b>'+photos+'</b><span>Photos</span></div>'+
+        '</div>'+
+        '<div style="max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:12px">'+
+          '<button class="bigbtn" id="again">Run the demo again'+svg(ICON.arrow)+'</button>'+
+          '<button class="bigbtn bigbtn--ghost" id="out">End day & sign out</button>'+
+        '</div></div>'+
+      '</div></div></div></div>';
+    document.getElementById('again').addEventListener('click',function(){ S.route=freshRoute(); S.stopId=null; S.screen='route'; render(); });
+    document.getElementById('out').addEventListener('click',function(){ S.tech=null; S.route=[]; S.screen='login'; render(); });
+  }
+
+  /* ---- toast ---- */
+  var toastT;
+  function toast(msg,icon){
+    var el=document.getElementById('toast');
+    el.innerHTML=(icon?svg(icon):'')+'<span>'+esc(msg)+'</span>';
+    el.classList.add('show'); clearTimeout(toastT);
+    toastT=setTimeout(function(){ el.classList.remove('show'); },2600);
+  }
+
+  /* deep-link for quick testing: tech-route.html#route | #stop | #report | #done
+     (loads Marcus's demo route and jumps straight to that screen) */
+  function deeplink(){
+    var h=(location.hash||'').replace('#','');
+    if(['route','stop','report','done'].indexOf(h)<0) return false;
+    S.tech=TECHS[0]; S.route=freshRoute();
+    if(h==='route'){ S.screen='route'; return true; }
+    var s=S.route[2]; S.stopId=s.id; // the urgent Dana Rivera stop (best shows alerts)
+    if(h==='stop'){ s.status='onsite'; S.screen='stop'; }
+    else if(h==='report'){ s.status='onsite'; S.screen='report'; }
+    else if(h==='done'){ S.route.forEach(function(x){x.status='completed';}); S.screen='done'; }
+    return true;
+  }
+  deeplink();
+  window.addEventListener('hashchange',function(){ if(deeplink()) render(); });
+  render();
+})();
+</script>
+</body>
+</html>

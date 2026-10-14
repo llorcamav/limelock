@@ -264,6 +264,36 @@ button.row:hover{background:var(--carbon-2)}
   .card{padding:18px}.card--pad-lg{padding:20px}
   .drawer__body{padding:20px 18px}.drawer__head{padding:20px 18px 18px}.drawer__foot{padding:14px 18px}
 }
+
+/* ===== live field activity (CEO) ===== */
+.live-dot{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--lime)}
+.live-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lime);animation:llpulse 1.8s infinite}
+@keyframes llpulse{0%{box-shadow:0 0 0 0 rgba(95,201,61,.5)}70%{box-shadow:0 0 0 9px rgba(95,201,61,0)}100%{box-shadow:0 0 0 0 rgba(95,201,61,0)}}
+.comp{border:1px solid var(--line);border-radius:var(--radius);background:var(--carbon);margin-bottom:12px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.comp__head{display:flex;align-items:center;gap:14px;padding:16px 18px;width:100%;text-align:left;background:transparent;border:0;color:inherit}
+.comp__tick{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--lime-soft);color:var(--lime)}
+.comp__tick svg{width:22px;height:22px}
+.comp__main{flex:1;min-width:0}
+.comp__svc{font-weight:600;font-size:15.5px}
+.comp__sub{color:var(--muted);font-size:13px;margin-top:3px}
+.comp__right{flex:none;display:flex;align-items:center;gap:12px}
+.comp__time{font-family:var(--ff-mono);font-size:11.5px;color:var(--muted);white-space:nowrap}
+.comp__chev{width:20px;height:20px;color:var(--muted);transition:transform .2s}
+.comp.open .comp__chev{transform:rotate(90deg);color:var(--lime)}
+.comp__body{padding:2px 18px 18px;border-top:1px solid var(--line-2);display:none}
+.comp.open .comp__body{display:block}
+.rpt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+@media(max-width:620px){.rpt-grid{grid-template-columns:1fr}}
+.rpt-k{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.rpt-v{font-size:14.5px;line-height:1.55}
+.tag{display:inline-block;font-size:12.5px;padding:5px 11px;border-radius:999px;background:var(--lime-soft);color:var(--lime);margin:0 6px 7px 0}
+.tag--n{background:var(--line-2);color:var(--bone)}
+.comp--flash{animation:llflash 1.8s var(--ease)}
+@keyframes llflash{0%{border-color:var(--lime);box-shadow:0 0 0 3px var(--lime-soft)}100%{border-color:var(--line);box-shadow:none}}
+.count.live{background:var(--lime-soft);color:var(--lime)}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);z-index:120;background:var(--raise);border:1px solid var(--line);color:var(--bone);padding:13px 20px;border-radius:14px;font-weight:600;font-size:14px;box-shadow:0 24px 50px -24px #000;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;display:flex;align-items:center;gap:10px;max-width:92vw}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast svg{width:19px;height:19px;color:var(--lime);flex:none}
 </style>
 </head>
 <body>
@@ -274,7 +304,7 @@ button.row:hover{background:var(--carbon-2)}
   <div class="login__grid" aria-hidden="true"></div>
   <a class="login__back" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>limelock.com</a>
   <form class="login__card" id="loginForm" novalidate>
-    <img class="login__logo" src="limelock-nav.svg" alt="LimeLock" />
+    <img class="login__logo" src="limelock-mark.svg" alt="LimeLock — The Pest Control Company" />
     <h1 class="login__title">Sign in</h1>
     <p class="login__sub">One portal. You'll see what your role permits.</p>
     <div class="seg" id="roleSeg" role="tablist">
@@ -348,6 +378,8 @@ button.row:hover{background:var(--carbon-2)}
     <button class="btn btn--primary" id="dAdvance" type="button">Advance</button>
   </div>
 </aside>
+
+<div id="toast"></div>
 
 <script src="store.js"></script>
 <script>
@@ -424,6 +456,7 @@ button.row:hover{background:var(--carbon-2)}
   // ---------- NAV ----------
   var ICON={
     overview:'<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',
+    activity:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
     analytics:'<path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="14" width="3" height="4"/>',
     requests:'<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>',
     request:'<path d="M12 5v14M5 12h14"/>',
@@ -438,6 +471,7 @@ button.row:hover{background:var(--carbon-2)}
   };
   var NAV=[
     {t:'overview',label:'Overview',roles:['customer','tech','ceo']},
+    {t:'activity',label:'Field activity',roles:['ceo']},
     {t:'analytics',label:'Analytics',roles:['ceo']},
     {t:'requests',label:'My requests',roles:['customer']},
     {t:'request',label:'Request service',roles:['customer']},
@@ -456,6 +490,7 @@ button.row:hover{background:var(--carbon-2)}
       var b=document.createElement('button'); b.className='navitem'; b.dataset.t=n.t;
       var cnt='';
       if(n.t==='dispatch'||(n.t==='jobs'&&S.role==='ceo')){ var nc=visibleJobs().filter(function(j){return j.status==='new';}).length; if(nc) cnt='<span class="count hot">'+nc+'</span>'; }
+      if(n.t==='activity'){ var ac=(window.LLStore?LLStore.completions().length:0); if(ac) cnt='<span class="count live">'+ac+'</span>'; }
       b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICON[n.t]+'</svg>'+n.label+cnt;
       b.addEventListener('click',function(){ go(n.t); });
       nav.appendChild(b);
@@ -487,6 +522,7 @@ button.row:hover{background:var(--carbon-2)}
 
   function render(t){
     if(t==='overview') return renderOverview();
+    if(t==='activity') return renderActivity();
     if(t==='analytics') return renderAnalytics();
     if(t==='requests') return renderRequests();
     if(t==='request') return renderRequest();
@@ -531,14 +567,17 @@ button.row:hover{background:var(--carbon-2)}
       var active=all.filter(function(j){return j.status!=='completed'&&j.status!=='new';}).length;
       var revenue=INVOICES.filter(function(i){return i.status==='Paid';}).reduce(function(s,i){return s+i.amount;},0);
       var due=INVOICES.filter(function(i){return i.status==='Due';}).reduce(function(s,i){return s+i.amount;},0);
+      var comps=(window.LLStore?LLStore.completions():[]);
       R.innerHTML=head('Operations','Company overview.','Everything across customers and crew — card numbers excluded.')+
         '<div class="grid cols-4" style="margin-bottom:16px">'+
           stat('Customers',String(Object.keys(CUSTOMERS).length),'on the books')+
           stat('Active jobs',String(active),'in the field')+
           stat('New requests',String(newc),'awaiting dispatch')+
-          stat('Revenue (paid)','$'+revenue,'$'+due+' outstanding')+'</div>'+
+          stat('Completed today',String(comps.length),'services filed')+'</div>'+
         '<div class="grid cols-2"><div class="card card--pad-lg"><div class="card__head"><h3>New requests</h3><button class="card__link" data-jump="dispatch">Dispatch →</button></div><div>'+(newc?all.filter(function(j){return j.status==='new';}).map(function(j){return jobRow(j);}).join(''):'<div class="empty">All caught up.</div>')+'</div></div>'+
-          '<div class="card card--pad-lg"><div class="card__head"><h3>Crew on shift</h3></div>'+TECHS.map(function(tk){var load=all.filter(function(j){return j.tech===tk.id&&j.status!=='completed';}).length;return '<div class="row"><span class="row__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><span class="row__main"><b>'+esc(tk.name)+'</b><span>'+esc(tk.terr)+'</span></span><span class="row__right"><span class="badge badge--ok">'+load+' active</span></span></div>';}).join('')+'</div></div>';
+          '<div class="card card--pad-lg"><div class="card__head"><h3>Crew on shift</h3></div>'+TECHS.map(function(tk){var load=all.filter(function(j){return j.tech===tk.id&&j.status!=='completed';}).length;return '<div class="row"><span class="row__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><span class="row__main"><b>'+esc(tk.name)+'</b><span>'+esc(tk.terr)+'</span></span><span class="row__right"><span class="badge badge--ok">'+load+' active</span></span></div>';}).join('')+'</div></div>'+
+        '<div class="card card--pad-lg" style="margin-top:16px"><div class="card__head"><h3><span class="live-dot">Field activity</span></h3><button class="card__link" data-jump="activity">Open feed →</button></div>'+
+          '<div id="ovFeed">'+(comps.length?comps.slice(0,4).map(function(c){return compMini(c);}).join(''):'<div class="empty">No completed services yet today. They\'ll appear here live as technicians finish.</div>')+'</div></div>';
     }
     wireCommon();
   }
@@ -580,6 +619,48 @@ button.row:hover{background:var(--carbon-2)}
       '<div class="card card--pad-lg"><div class="card__head"><h3>Jobs by status</h3></div>'+hbar(byStatus)+'</div></div>'+
       '<div class="grid cols-2" style="margin-top:16px"><div class="card card--pad-lg"><div class="card__head"><h3>Revenue by plan</h3></div>'+hbar(byPlan)+'</div>'+
       '<div class="card card--pad-lg"><div class="card__head"><h3>Technician workload</h3></div>'+hbar(util)+'</div></div>';
+    wireCommon();
+  }
+
+  // ----- FIELD ACTIVITY (ceo, live) -----
+  function relTime(ts){ var s=Math.round((Date.now()-ts)/1000);
+    if(s<10)return'just now'; if(s<60)return s+'s ago';
+    var m=Math.round(s/60); if(m<60)return m+' min ago';
+    var h=Math.round(m/60); if(h<24)return h+'h ago'; return new Date(ts).toLocaleDateString(); }
+  function clockOf(ts){ var d=new Date(ts),h=d.getHours(),m=d.getMinutes(),ap=h<12?'AM':'PM'; h=h%12||12; return h+':'+(m<10?'0':'')+m+' '+ap; }
+  function tags(list,alt){ return (list&&list.length)?list.map(function(x){return '<span class="tag'+(alt?' tag--n':'')+'">'+esc(x)+'</span>';}).join(''):'<span class="rpt-v" style="color:var(--muted)">—</span>'; }
+  function compCard(c,flash){
+    return '<div class="comp'+(flash?' comp--flash':'')+'" data-cid="'+esc(c.cid)+'">'+
+      '<button class="comp__head" data-toggle="1">'+
+        '<span class="comp__tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'+
+        '<span class="comp__main"><span class="comp__svc">'+esc(c.service)+(c.urgency==='Urgent'?' <span class="badge badge--warn" style="margin-left:6px">Urgent</span>':'')+'</span>'+
+          '<span class="comp__sub">'+esc(c.customer)+' · '+esc(c.loc)+' · by '+esc(c.tech)+'</span></span>'+
+        '<span class="comp__right"><span class="comp__time">'+relTime(c.at)+'</span>'+
+          '<svg class="comp__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>'+
+      '</button>'+
+      '<div class="comp__body"><div class="rpt-grid">'+
+          '<div><div class="rpt-k">Areas treated</div>'+tags(c.areas)+'</div>'+
+          '<div><div class="rpt-k">Products applied</div>'+tags(c.products,true)+'</div></div>'+
+        '<div class="rpt-k">Findings</div><div class="rpt-v">'+(c.findings?esc(c.findings):'<span style="color:var(--muted)">No additional notes.</span>')+'</div>'+
+        '<div class="rpt-grid"><div><div class="rpt-k">Job</div><div class="rpt-v mono">'+esc(c.jobId)+'</div></div>'+
+          '<div><div class="rpt-k">Completed</div><div class="rpt-v">'+clockOf(c.at)+' · '+(c.photos||0)+' photo'+((c.photos||0)===1?'':'s')+' · '+(c.signed?'customer signed ✓':'unsigned')+'</div></div></div>'+
+      '</div></div>';
+  }
+  function compMini(c){
+    return '<div class="row"><span class="row__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>'+
+      '<span class="row__main"><b>'+esc(c.service)+'</b><span>'+esc(c.customer)+' · by '+esc(c.tech)+'</span></span>'+
+      '<span class="row__right"><span class="comp__time">'+relTime(c.at)+'</span></span></div>';
+  }
+  function wireComp(){ R.querySelectorAll('.comp__head[data-toggle]').forEach(function(b){ if(b.__w)return; b.__w=1; b.addEventListener('click',function(){ b.parentNode.classList.toggle('open'); }); }); }
+  function renderActivity(){
+    var list=(window.LLStore?LLStore.completions():[]);
+    R.innerHTML=head('Field · live','Field activity','Completed services stream in here the moment a technician files the report on their tablet — no refresh needed.')+
+      '<div class="card card--pad-lg"><div class="card__head"><h3><span class="live-dot">Live feed</span></h3>'+
+        (list.length?'<button class="btn btn--ghost btn--sm" id="clearFeed">Clear feed</button>':'')+'</div>'+
+        '<div id="compList">'+(list.length?list.map(function(c){return compCard(c,false);}).join(''):'<div class="empty">No completed services yet. Finish a stop in the tech app and it appears here instantly.</div>')+'</div>'+
+      '</div>';
+    wireComp();
+    var cf=document.getElementById('clearFeed'); if(cf) cf.addEventListener('click',function(){ if(window.LLStore)LLStore.clearCompletions(); buildNav(); render('activity'); });
     wireCommon();
   }
 
@@ -877,18 +958,67 @@ button.row:hover{background:var(--carbon-2)}
     document.querySelectorAll('#roleSeg button').forEach(function(x){x.classList.remove('active')}); b.classList.add('active');
     document.getElementById('user').value=SEATS[b.dataset.role].user;
   }); });
-  document.getElementById('loginForm').addEventListener('submit',function(e){ e.preventDefault();
-    var role=document.querySelector('#roleSeg button.active').dataset.role; var seat=SEATS[role];
+  function doLogin(role,view){
+    var seat=SEATS[role];
     S={role:role,id:seat.id,name:seat.name,av:seat.av,meta:seat.meta};
     initJobs();
     document.getElementById('acctAv').textContent=seat.av; document.getElementById('acctName').textContent=seat.name; document.getElementById('acctMeta').textContent=seat.meta;
     document.getElementById('rolePill').textContent=seat.role; document.getElementById('sideRole').textContent=seat.side+' portal';
-    buildNav(); go('overview');
+    buildNav(); go(view||'overview');
     document.getElementById('login').style.display='none'; document.getElementById('app').classList.add('show'); window.scrollTo(0,0);
+  }
+  document.getElementById('loginForm').addEventListener('submit',function(e){ e.preventDefault();
+    doLogin(document.querySelector('#roleSeg button.active').dataset.role);
   });
   document.getElementById('logout').addEventListener('click',function(){ document.getElementById('app').classList.remove('show'); document.getElementById('login').style.display='grid'; });
 
+  // ---------- TOAST ----------
+  var toastT;
+  function toast(msg){ var el=document.getElementById('toast'); if(!el)return;
+    el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>'+esc(msg)+'</span>';
+    el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){ el.classList.remove('show'); },3200); }
+
+  // ---------- LIVE FIELD ACTIVITY (tech completions → CEO, real time) ----------
+  var lastLen=(window.LLStore?LLStore.completions().length:0);
+  function liveRefresh(newRec){
+    if(S.role!=='ceo') return;
+    lastLen=(window.LLStore?LLStore.completions().length:0);
+    buildNav();
+    if(curView==='activity'){ render('activity'); if(newRec){ var f=R.querySelector('.comp'); if(f) f.classList.add('comp--flash'); } }
+    else if(curView==='overview'){ render('overview'); }
+    if(newRec){ toast('New service filed: '+newRec.customer+' — '+newRec.service); }
+  }
+  if(window.LLStore && LLStore.onLive){ LLStore.onLive(function(msg){ liveRefresh(msg&&msg.type==='completion'?msg.rec:null); }); }
+  setInterval(function(){ if(S.role==='ceo'&&window.LLStore&&LLStore.completions().length!==lastLen){ liveRefresh(null); } },2500);
+
   initJobs();
+
+  // ---------- demo: a mock completed route for the Field activity page (only seeds when the feed is empty) ----------
+  function seedCompletions(){
+    if(!(window.LLStore && LLStore.seedCompletions)) return;
+    var now=Date.now(), M=60000;
+    var seed=[
+      {jobId:'JOB-2088',techId:'T08',tech:'Marcus B.',customer:'Greg Halloran',loc:'Palmetto',address:'704 8th Ave W, Palmetto, FL',service:'Quarterly barrier service',urgency:'Routine',areas:['Exterior foundation','Eaves','Perimeter','Garage'],products:['Perimeter barrier','Granular bait'],findings:'All clear. Refreshed exterior barrier and cleared eave webbing.',photos:2,signed:true,at:now-325*M},
+      {jobId:'JOB-2031',techId:'T11',tech:'Devon R.',customer:'Marquez Bistro',loc:'Sarasota',address:'28 S Pineapple Ave, Sarasota, FL',service:'Commercial roach — kitchen',urgency:'Routine',areas:['Kitchen line','Dish pit','Dry storage'],products:['Commercial gel bait','IGR growth regulator'],findings:'Low activity, compliant for inspection. Documentation emailed to ops.',photos:3,signed:true,at:now-268*M},
+      {jobId:'JOB-2065',techId:'T08',tech:'Marcus B.',customer:'Sofia Marin',loc:'Siesta Key',address:'5022 Ocean Blvd, Siesta Key, FL',service:'Roach treatment — interior',urgency:'Routine',areas:['Kitchen','Under sinks','Pantry','Appliance gaps'],products:['Pet-safe gel bait','Crack & crevice','IGR growth regulator'],findings:'Light activity behind dishwasher; baited and sealed the gap. Recommend a re-check next visit.',photos:3,signed:true,at:now-205*M},
+      {jobId:'JOB-2090',techId:'T04',tech:'Priya N.',customer:'Whitfield HOA',loc:'Sarasota',address:'7200 Tamiami Trail, Sarasota, FL',service:'Rodent exclusion check',urgency:'Routine',areas:['Clubhouse exterior','Roof line','Utility penetrations'],products:['Exclusion mesh','Bait stations serviced'],findings:'All exclusion points intact. Serviced 6 exterior stations; low activity.',photos:4,signed:true,at:now-96*M},
+      {jobId:'JOB-2071',techId:'T08',tech:'Marcus B.',customer:'Dana Rivera',loc:'Gulf Gate',address:'2114 Gulf Gate Dr, Sarasota, FL',service:'Ant treatment — kitchen',urgency:'Urgent',areas:['Kitchen','Counters','Perimeter','Entry points'],products:['Pet-safe gel bait','Non-repellent spray','Exterior granule'],findings:'Traced the trail to a gap under the sink; baited and treated the exterior entry. Pet-safe throughout (dog on site).',photos:1,signed:true,at:now-54*M},
+      {jobId:'JOB-2080',techId:'T08',tech:'Marcus B.',customer:'The Alvarez Family',loc:'Lakewood Ranch',address:'14250 Covenant Way, Lakewood Ranch, FL',service:'Mosquito yard treatment',urgency:'Routine',areas:['Backyard','Lanai','Shrub line','Standing water'],products:['Mosquito barrier fog','Larvicide','IGR growth regulator'],findings:'Fogged the yard and lanai. Emptied two standing-water sources. Gate re-locked on the way out.',photos:2,signed:true,at:now-28*M}
+    ];
+    seed.sort(function(a,b){return b.at-a.at;}); // newest first
+    seed.forEach(function(r){ r.cid='C'+r.at+'-seed'; });
+    LLStore.seedCompletions(seed);
+  }
+  seedCompletions();
+
+  // ---------- deep-link for quick testing: app.html#ceo | #tech | #customer | #ceo/activity ----------
+  (function(){
+    var parts=(location.hash||'').replace('#','').split('/'), role=parts[0], view=parts[1];
+    if(['customer','tech','ceo'].indexOf(role)<0) return;
+    document.querySelectorAll('#roleSeg button').forEach(function(x){ x.classList.toggle('active',x.dataset.role===role); });
+    var u=document.getElementById('user'); if(u) u.value=SEATS[role].user;
+    doLogin(role, view || (role==='ceo'?'activity':'overview'));
+  })();
 })();
 </script>
 <script>
