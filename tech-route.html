@@ -73,6 +73,7 @@ p{margin:0}button{font-family:inherit;cursor:pointer;color:inherit}svg{display:b
 .avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--ff-display);font-weight:800;font-size:15px;background:linear-gradient(145deg,var(--lime),var(--lime-deep));color:#062307;flex:none}
 .avatar--sm{width:38px;height:38px;font-size:13px}
 .demo-pill{font-family:var(--ff-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2);border:1px solid var(--line);border-radius:999px;padding:4px 9px}
+body.embed .top{display:none}
 
 /* ---------- login ---------- */
 .login{flex:1;display:grid;place-items:center;padding:28px 0;position:relative;overflow:hidden}
@@ -224,6 +225,10 @@ textarea:focus{outline:none;border-color:var(--lime)}
 <script>
 (function(){
   "use strict";
+
+  // when embedded as the portal dashboard (?embed=1), hide this app's own top bar
+  var EMBED = /[?&]embed=1/.test(location.search||'');
+  try{ if(EMBED) document.body.classList.add('embed'); }catch(e){}
 
   /* ============ MOCK DATA ============ */
   var TECHS=[
@@ -524,11 +529,11 @@ textarea:focus{outline:none;border-color:var(--lime)}
         '</div>'+
         '<div style="max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:12px">'+
           '<button class="bigbtn" id="again">Run the demo again'+svg(ICON.arrow)+'</button>'+
-          '<button class="bigbtn bigbtn--ghost" id="out">End day & sign out</button>'+
+          (EMBED?'':'<button class="bigbtn bigbtn--ghost" id="out">End day & sign out</button>')+
         '</div></div>'+
       '</div></div></div></div>';
     document.getElementById('again').addEventListener('click',function(){ S.route=freshRoute(); S.stopId=null; S.screen='route'; render(); });
-    document.getElementById('out').addEventListener('click',function(){ window.location.href='app.html'; });
+    var outBtn=document.getElementById('out'); if(outBtn) outBtn.addEventListener('click',function(){ window.location.href='app.html'; });
   }
 
   /* ---- toast ---- */
