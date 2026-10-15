@@ -959,6 +959,7 @@ button.row:hover{background:var(--carbon-2)}
     document.getElementById('user').value=SEATS[b.dataset.role].user;
   }); });
   function doLogin(role,view){
+    if(role==='tech'){ window.location.href='tech-route.html#route'; return; } // technicians use the tablet route
     var seat=SEATS[role];
     S={role:role,id:seat.id,name:seat.name,av:seat.av,meta:seat.meta};
     initJobs();

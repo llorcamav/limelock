@@ -528,7 +528,7 @@ textarea:focus{outline:none;border-color:var(--lime)}
         '</div></div>'+
       '</div></div></div></div>';
     document.getElementById('again').addEventListener('click',function(){ S.route=freshRoute(); S.stopId=null; S.screen='route'; render(); });
-    document.getElementById('out').addEventListener('click',function(){ S.tech=null; S.route=[]; S.screen='login'; render(); });
+    document.getElementById('out').addEventListener('click',function(){ window.location.href='app.html'; });
   }
 
   /* ---- toast ---- */
